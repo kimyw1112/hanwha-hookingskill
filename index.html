@@ -1017,6 +1017,20 @@ function stopTTS() {
 /* ── PWA INSTALL ── */
 let deferredPrompt = null;
 
+// beforeinstallprompt는 페이지 로드 초기에 딱 한 번 발생하므로
+// 스크립트 최상단에서 즉시 캡처해야 함
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+});
+
+window.addEventListener('appinstalled', () => {
+  const btn = document.getElementById('btn-install');
+  if (btn) btn.classList.remove('visible');
+  showToast('홈 화면에 추가되었습니다! 🎉');
+  deferredPrompt = null;
+});
+
 function isIOS() {
   return /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
 }
@@ -1025,23 +1039,12 @@ function isInStandaloneMode() {
          window.matchMedia('(display-mode: standalone)').matches;
 }
 
+// 로딩 끝난 후 호출됨
 function initInstallButton() {
-  if (isInStandaloneMode()) return; // 이미 설치됨 → 버튼 숨김
+  if (isInStandaloneMode()) return; // 이미 앱으로 실행 중이면 불필요
   const btn = document.getElementById('btn-install');
-  if (isIOS()) {
-    btn.classList.add('visible'); // iOS는 항상 표시 (안내 팝업)
-  }
-  // Android: beforeinstallprompt 이벤트 기다림
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    btn.classList.add('visible');
-  });
-  window.addEventListener('appinstalled', () => {
-    btn.classList.remove('visible');
-    showToast('홈 화면에 추가되었습니다! 🎉');
-    deferredPrompt = null;
-  });
+  if (!btn) return;
+  btn.classList.add('visible'); // 항상 표시 — Android/iOS 모두
 }
 
 function handleInstall() {
@@ -1058,7 +1061,8 @@ function handleInstall() {
       deferredPrompt = null;
     });
   } else {
-    showToast('이미 설치되어 있거나, Chrome 브라우저를 이용해 주세요');
+    // deferredPrompt 없을 때 → 직접 안내 팝업
+    document.getElementById('ios-modal').classList.add('open');
   }
 }
 
@@ -1067,8 +1071,6 @@ function closeIosModal(e) {
     document.getElementById('ios-modal').classList.remove('open');
   }
 }
-
-initInstallButton();
 /* ── END PWA ── */
 
 /* ── ACCESS KEY + 로딩 통합 ── */
@@ -1100,7 +1102,10 @@ function hideLoading() {
   const el = document.getElementById('loading-screen');
   if (!el) return;
   el.classList.add('hidden');
-  setTimeout(() => el.remove(), 400);
+  setTimeout(() => {
+    el.remove();
+    initInstallButton(); // 로딩 끝난 후 버튼 표시 여부 결정
+  }, 400);
 }
 
 // 로딩 완료 후 → 이미 인증됐으면 바로 숨김, 아니면 코드 입력창 표시
