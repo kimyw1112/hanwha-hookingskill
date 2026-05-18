@@ -741,7 +741,29 @@
   </div>
 </div>
 
-<!-- IOS INSTALL MODAL -->
+<!-- ANDROID INSTALL MODAL -->
+<div class="ios-modal-overlay" id="android-modal" onclick="closeAndroidModal(event)">
+  <div class="ios-modal">
+    <div class="ios-modal-handle"></div>
+    <h3>📲 홈 화면에 추가하기</h3>
+    <p>아래 순서대로 따라하면 앱처럼 바로 실행할 수 있어요!</p>
+    <div class="ios-steps">
+      <div class="ios-step">
+        <div class="ios-step-num">1</div>
+        <div class="ios-step-text">Chrome 주소창 오른쪽 <strong>점 3개(⋮)</strong> 메뉴를 탭하세요</div>
+      </div>
+      <div class="ios-step">
+        <div class="ios-step-num">2</div>
+        <div class="ios-step-text"><strong>"홈 화면에 추가"</strong> 또는 <strong>"앱 설치"</strong>를 탭하세요</div>
+      </div>
+      <div class="ios-step">
+        <div class="ios-step-num">3</div>
+        <div class="ios-step-text"><strong>"추가"</strong>를 탭하면 홈 화면에 아이콘이 생겨요!</div>
+      </div>
+    </div>
+    <button class="btn-ios-close" onclick="document.getElementById('android-modal').classList.remove('open')">확인했어요</button>
+  </div>
+</div>
 <div class="ios-modal-overlay" id="ios-modal" onclick="closeIosModal(event)">
   <div class="ios-modal">
     <div class="ios-modal-handle"></div>
@@ -1048,11 +1070,8 @@ function initInstallButton() {
 }
 
 function handleInstall() {
-  if (isIOS()) {
-    document.getElementById('ios-modal').classList.add('open');
-    return;
-  }
   if (deferredPrompt) {
+    // Chrome이 자동 설치 지원하면 바로 실행
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then(choice => {
       if (choice.outcome === 'accepted') {
@@ -1061,14 +1080,23 @@ function handleInstall() {
       deferredPrompt = null;
     });
   } else {
-    // deferredPrompt 없을 때 → 직접 안내 팝업
-    document.getElementById('ios-modal').classList.add('open');
+    // 자동 설치 불가 → 기기별 안내 팝업 표시
+    if (isIOS()) {
+      document.getElementById('ios-modal').classList.add('open');
+    } else {
+      document.getElementById('android-modal').classList.add('open');
+    }
   }
 }
 
 function closeIosModal(e) {
   if (e.target === document.getElementById('ios-modal')) {
     document.getElementById('ios-modal').classList.remove('open');
+  }
+}
+function closeAndroidModal(e) {
+  if (e.target === document.getElementById('android-modal')) {
+    document.getElementById('android-modal').classList.remove('open');
   }
 }
 /* ── END PWA ── */
