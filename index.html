@@ -590,9 +590,69 @@
     font-size: 15px; font-weight: 600;
     color: var(--text2); font-family: inherit; cursor: pointer;
   }
+  /* LOADING SCREEN */
+  #loading-screen {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(160deg, #E8310A 0%, #FF5733 40%, #FF8C00 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.4s ease;
+  }
+  #loading-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .loading-icon {
+    width: 72px;
+    height: 72px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 1.5rem;
+  }
+  .loading-text {
+    font-size: 17px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+  .loading-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 2rem;
+  }
+  .loading-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
 </style>
 </head>
 <body>
+
+<!-- LOADING SCREEN -->
+<div id="loading-screen">
+  <div class="loading-icon">화</div>
+  <div class="loading-text">로딩 중입니다</div>
+  <div class="loading-sub">잠시만 기다려 주세요</div>
+  <div class="loading-spinner"></div>
+</div>
 
 <!-- PAGE 1: LOGIN -->
 <div id="page-login" class="page active">
@@ -975,6 +1035,20 @@ function checkAccessKey() {
 
 if (!checkAccessKey()) { throw new Error('access denied'); }
 /* ── END ACCESS KEY ── */
+
+/* ── 로딩 화면 제거 ── */
+function hideLoading() {
+  const el = document.getElementById('loading-screen');
+  if (!el) return;
+  el.classList.add('hidden');
+  setTimeout(() => el.remove(), 400);
+}
+if (document.readyState === 'complete') {
+  hideLoading();
+} else {
+  window.addEventListener('load', hideLoading);
+}
+/* ── END LOADING ── */
 
 document.getElementById('input-name').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('input-id').focus(); });
 document.getElementById('input-id').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
