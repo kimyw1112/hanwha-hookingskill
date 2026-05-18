@@ -1,9 +1,17 @@
-const CACHE_NAME = 'hanwha-fp-v1';
-const ASSETS = ['./', './index.html', './manifest.json'];
+const CACHE_NAME = 'hanwha-fp-v2';
 
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME).then(cache => {
+      const scope = self.registration.scope;
+      return cache.addAll([
+        scope,
+        scope + 'index.html',
+        scope + 'manifest.json',
+        scope + 'icon-192.png',
+        scope + 'icon-512.png'
+      ]);
+    }).catch(() => {})
   );
   self.skipWaiting();
 });
@@ -11,7 +19,9 @@ self.addEventListener('install', e => {
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+      Promise.all(
+        keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
+      )
     )
   );
   self.clients.claim();
@@ -19,6 +29,16 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request))
+    caches.match(e.request).then(cached => {
+      if (cached) return cached;
+      return fetch(e.request).then(response => {
+        if (!response || response.status !== 200) return response;
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
+        return response;
+      }).catch(() =>
+        caches.match(self.registration.scope + 'index.html')
+      );
+    })
   );
 });
