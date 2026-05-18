@@ -601,6 +601,7 @@
     justify-content: center;
     z-index: 9999;
     transition: opacity 0.4s ease;
+    padding: 2rem;
   }
   #loading-screen.hidden {
     opacity: 0;
@@ -639,19 +640,79 @@
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
   }
-  @keyframes spin {
-    to { transform: rotate(360deg); }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* 접속코드 입력 박스 (로딩 화면 위에 표시) */
+  #access-box {
+    display: none;
+    background: white;
+    border-radius: 20px;
+    padding: 2rem 1.75rem;
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
   }
+  #access-box.visible { display: block; }
+  .access-lock { font-size: 40px; margin-bottom: 0.75rem; }
+  .access-title { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 0.4rem; }
+  .access-desc { font-size: 13px; color: var(--text2); margin-bottom: 1.25rem; line-height: 1.5; }
+  .access-input {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 18px;
+    font-family: inherit;
+    text-align: center;
+    letter-spacing: 0.2em;
+    outline: none;
+    margin-bottom: 10px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .access-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(232,49,10,0.1);
+  }
+  .access-input.error { border-color: #e53935; box-shadow: 0 0 0 3px rgba(229,57,53,0.12); }
+  .access-error { font-size: 12px; color: #e53935; font-weight: 600; margin-bottom: 10px; min-height: 18px; }
+  .access-submit {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #E8310A, #FF5733);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .access-submit:active { opacity: 0.9; }
 </style>
 </head>
 <body>
 
-<!-- LOADING SCREEN -->
+<!-- LOADING SCREEN (로딩 + 접속코드 입력 통합) -->
 <div id="loading-screen">
-  <div class="loading-icon">화</div>
-  <div class="loading-text">로딩 중입니다</div>
-  <div class="loading-sub">잠시만 기다려 주세요</div>
-  <div class="loading-spinner"></div>
+  <!-- 로딩 중 상태 -->
+  <div id="loading-spinner-wrap">
+    <div class="loading-icon">화</div>
+    <div class="loading-text">로딩 중입니다</div>
+    <div class="loading-sub">잠시만 기다려 주세요</div>
+    <div class="loading-spinner"></div>
+  </div>
+  <!-- 접속코드 입력 상태 -->
+  <div id="access-box">
+    <div class="access-lock">🔐</div>
+    <div class="access-title">접속 코드를 입력하세요</div>
+    <div class="access-desc">한화손보 FP 전용 페이지입니다.<br>관리자에게 코드를 문의해 주세요.</div>
+    <input class="access-input" id="access-input" type="password" inputmode="numeric"
+      placeholder="• • • •" maxlength="20"
+      onkeydown="if(event.key==='Enter') submitAccessKey()" />
+    <div class="access-error" id="access-error"></div>
+    <button class="access-submit" onclick="submitAccessKey()">확인</button>
+  </div>
 </div>
 
 <!-- PAGE 1: LOGIN -->
@@ -1010,45 +1071,54 @@ function closeIosModal(e) {
 initInstallButton();
 /* ── END PWA ── */
 
-/* ── ACCESS KEY PROTECTION ── */
+/* ── ACCESS KEY + 로딩 통합 ── */
 const ACCESS_KEY = '1234';
 
-function checkAccessKey() {
-  const saved = sessionStorage.getItem('hw_access_ok');
-  if (saved === '1') return true;
-  const input = prompt('접속 코드를 입력하세요:');
-  if (input && input.trim() === ACCESS_KEY) {
+function submitAccessKey() {
+  const val = document.getElementById('access-input').value.trim();
+  const errEl = document.getElementById('access-error');
+  const inputEl = document.getElementById('access-input');
+  if (val === ACCESS_KEY) {
     sessionStorage.setItem('hw_access_ok', '1');
-    return true;
+    errEl.textContent = '';
+    hideLoading();
+  } else {
+    inputEl.classList.add('error');
+    errEl.textContent = '접속 코드가 올바르지 않습니다';
+    inputEl.value = '';
+    setTimeout(() => inputEl.classList.remove('error'), 1200);
   }
-  document.body.innerHTML = `
-    <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#E8310A,#FF8C00);padding:2rem;">
-      <div style="background:white;border-radius:20px;padding:2.5rem 2rem;max-width:320px;text-align:center;">
-        <div style="font-size:48px;margin-bottom:1rem;">🔒</div>
-        <h2 style="font-size:18px;font-weight:700;margin-bottom:0.75rem;color:#1A1A2E;">접근 제한</h2>
-        <p style="font-size:14px;color:#666;line-height:1.6;">이 페이지는 한화손보 FP 전용입니다.<br>관리자에게 접속 코드를 문의해 주세요.</p>
-        <button onclick="location.reload()" style="margin-top:1.5rem;padding:12px 24px;background:linear-gradient(135deg,#E8310A,#FF5733);color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;">다시 시도</button>
-      </div>
-    </div>`;
-  return false;
 }
 
-if (!checkAccessKey()) { throw new Error('access denied'); }
-/* ── END ACCESS KEY ── */
+function showAccessBox() {
+  document.getElementById('loading-spinner-wrap').style.display = 'none';
+  document.getElementById('access-box').classList.add('visible');
+  setTimeout(() => document.getElementById('access-input').focus(), 100);
+}
 
-/* ── 로딩 화면 제거 ── */
 function hideLoading() {
   const el = document.getElementById('loading-screen');
   if (!el) return;
   el.classList.add('hidden');
   setTimeout(() => el.remove(), 400);
 }
-if (document.readyState === 'complete') {
-  hideLoading();
-} else {
-  window.addEventListener('load', hideLoading);
+
+// 로딩 완료 후 → 이미 인증됐으면 바로 숨김, 아니면 코드 입력창 표시
+function onPageReady() {
+  if (sessionStorage.getItem('hw_access_ok') === '1') {
+    hideLoading();
+  } else {
+    // 스피너를 최소 0.6초는 보여준 뒤 입력창으로 전환
+    setTimeout(showAccessBox, 600);
+  }
 }
-/* ── END LOADING ── */
+
+if (document.readyState === 'complete') {
+  onPageReady();
+} else {
+  window.addEventListener('load', onPageReady);
+}
+/* ── END ACCESS KEY + 로딩 ── */
 
 document.getElementById('input-name').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('input-id').focus(); });
 document.getElementById('input-id').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
