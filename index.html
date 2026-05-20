@@ -1268,13 +1268,7 @@ function resetTtsBtn(btn) {
   activeTtsBtn = null;
 }
 
-function stopTTS() {
-  if ('speechSynthesis' in window) { speechSynthesis.cancel(); }
-  if (activeTtsBtn) { resetTtsBtn(activeTtsBtn); }
-  ttsActive = false;
-  ttsUtterance = null;
-  activeTtsBtn = null;
-}
+/* stopTTS는 하단에 통합 정의됨 */
 
 /* ── PWA INSTALL ── */
 let deferredPrompt = null;
@@ -1693,12 +1687,13 @@ function renderAdminDashboard() {
 }
 
 /* ─────────────────────────────────────────── */
-// fullplay 페이지 진입 시 초기화는 btn-fullplay onclick에서 처리
 
-// stopTTS 확장: playAll도 정지
-const _origStopTTS = stopTTS;
 function stopTTS() {
-  _origStopTTS();
+  if ('speechSynthesis' in window) { speechSynthesis.cancel(); }
+  if (activeTtsBtn) { resetTtsBtn(activeTtsBtn); }
+  ttsActive = false;
+  ttsUtterance = null;
+  activeTtsBtn = null;
   if (playAllActive) stopPlayAll();
 }
 /* ─────────────────────────────────────────── */
