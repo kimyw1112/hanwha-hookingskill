@@ -689,6 +689,170 @@
     cursor: pointer;
   }
   .access-submit:active { opacity: 0.9; }
+
+  /* ORG SELECTOR PAGE */
+  #page-org { background: var(--surface2); }
+  .org-header {
+    background: linear-gradient(135deg, #E8310A, #FF5733);
+    padding: 3rem 1.5rem 1.5rem;
+    color: white;
+  }
+  .org-header h2 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .org-header p { font-size: 13px; opacity: 0.85; }
+  .org-body { padding: 1.25rem; }
+  .org-breadcrumb {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; color: var(--text2); margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  .org-breadcrumb span { color: var(--text3); }
+  .org-breadcrumb strong { color: var(--primary); font-weight: 600; }
+  .org-section-title {
+    font-size: 12px; font-weight: 700; color: var(--text3);
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px;
+  }
+  .org-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.25rem; }
+  .org-btn {
+    background: white; border: 1.5px solid var(--border);
+    border-radius: 12px; padding: 14px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    cursor: pointer; transition: border-color 0.15s, background 0.15s;
+    font-size: 15px; font-weight: 600; color: var(--text);
+    font-family: inherit;
+  }
+  .org-btn:active { background: var(--primary-bg); border-color: var(--primary); }
+  .org-btn .org-arrow { color: var(--text3); font-size: 18px; }
+  .org-btn.selected { background: var(--primary-bg); border-color: var(--primary); color: var(--primary); }
+  .org-skip { text-align: center; margin-top: 0.5rem; }
+  .org-skip button {
+    background: none; border: none; color: var(--text3);
+    font-size: 13px; font-family: inherit; cursor: pointer;
+    text-decoration: underline; padding: 8px;
+  }
+
+  /* FULL LISTEN PAGE */
+  #page-fullplay { background: var(--surface2); }
+  .fullplay-header {
+    background: linear-gradient(135deg, #E8310A, #FF5733);
+    padding: 3rem 1.5rem 1.5rem; color: white;
+  }
+  .fullplay-header h2 { font-size: 20px; font-weight: 700; }
+  .fullplay-header p { font-size: 13px; opacity: 0.85; margin-top: 4px; }
+  .fullplay-player {
+    background: white; margin: 1.25rem; border-radius: 16px;
+    padding: 1.5rem; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .fp-now-label { font-size: 11px; font-weight: 700; color: var(--primary);
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .fp-now-name { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .fp-now-step { font-size: 13px; color: var(--text2); margin-bottom: 1.25rem; }
+  .fp-progress-bar { height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; margin-bottom: 1rem; }
+  .fp-progress-fill { height: 100%; background: linear-gradient(90deg, #E8310A, #FF8C00); border-radius: 3px; transition: width 0.3s; }
+  .fp-counter { font-size: 12px; color: var(--text3); text-align: right; margin-bottom: 1.25rem; }
+  .fp-controls { display: flex; gap: 10px; }
+  .fp-btn-play {
+    flex: 1; padding: 14px; background: linear-gradient(135deg, #E8310A, #FF5733);
+    color: white; border: none; border-radius: 10px;
+    font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer;
+  }
+  .fp-btn-stop {
+    padding: 14px 18px; background: var(--surface2); border: 1.5px solid var(--border);
+    border-radius: 10px; font-size: 15px; font-family: inherit; cursor: pointer; color: var(--text2);
+  }
+  .fp-list { padding: 0 1.25rem 1.25rem; display: flex; flex-direction: column; gap: 6px; }
+  .fp-item {
+    background: white; border-radius: 10px; padding: 12px 14px;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px; color: var(--text2); cursor: pointer;
+    border: 1.5px solid transparent;
+  }
+  .fp-item.active { border-color: var(--primary); color: var(--primary); font-weight: 600; background: var(--primary-bg); }
+  .fp-item.played { color: var(--text3); }
+  .fp-item-num { width: 24px; height: 24px; border-radius: 6px; background: var(--surface2);
+    display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .fp-item.active .fp-item-num { background: var(--primary); color: white; }
+
+  /* ADMIN PAGE */
+  #page-admin { background: var(--surface2); }
+  .admin-header {
+    background: linear-gradient(135deg, #1A1A2E, #16213E);
+    padding: 3rem 1.5rem 1.5rem; color: white;
+  }
+  .admin-header h2 { font-size: 20px; font-weight: 700; }
+  .admin-header p { font-size: 13px; opacity: 0.7; margin-top: 4px; }
+  .admin-body { padding: 1.25rem; }
+  .admin-filter {
+    background: white; border-radius: 12px; padding: 1rem 1.25rem;
+    margin-bottom: 1rem; display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .admin-filter select {
+    flex: 1; min-width: 120px; padding: 8px 10px;
+    border: 1.5px solid var(--border); border-radius: 8px;
+    font-size: 13px; font-family: inherit; color: var(--text);
+    background: var(--surface2); outline: none;
+  }
+  .admin-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1rem; }
+  .admin-stat-card {
+    background: white; border-radius: 12px; padding: 1rem;
+    text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+  .admin-stat-num { font-size: 28px; font-weight: 800; color: var(--primary); }
+  .admin-stat-label { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .admin-section-title {
+    font-size: 13px; font-weight: 700; color: var(--text);
+    margin: 1rem 0 0.5rem;
+  }
+  .admin-fp-card {
+    background: white; border-radius: 10px; padding: 12px 14px;
+    display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .admin-fp-avatar {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: linear-gradient(135deg, #E8310A, #FF5733);
+    color: white; font-size: 14px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .admin-fp-info { flex: 1; min-width: 0; }
+  .admin-fp-name { font-size: 14px; font-weight: 700; color: var(--text); }
+  .admin-fp-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
+  .admin-fp-mini-bar { height: 4px; background: var(--surface2); border-radius: 2px; margin-top: 4px; overflow: hidden; }
+  .admin-fp-mini-fill { height: 100%; background: linear-gradient(90deg,#E8310A,#FF8C00); border-radius: 2px; }
+  .admin-fp-cnt { font-size: 14px; font-weight: 700; color: var(--primary); white-space: nowrap; }
+  .admin-chart { background: white; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
+  .admin-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .admin-bar-label { font-size: 12px; color: var(--text2); width: 80px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .admin-bar-wrap { flex: 1; height: 18px; background: var(--surface2); border-radius: 4px; overflow: hidden; }
+  .admin-bar-fill { height: 100%; background: linear-gradient(90deg,#E8310A,#FF8C00); border-radius: 4px; transition: width 0.5s; }
+  .admin-bar-val { font-size: 12px; font-weight: 700; color: var(--text2); width: 28px; text-align: right; flex-shrink: 0; }
+  .admin-empty { text-align: center; padding: 2rem; color: var(--text3); font-size: 14px; }
+  .btn-admin-logout {
+    width: 100%; margin-top: 1rem; padding: 13px;
+    background: transparent; border: 1.5px solid var(--border);
+    border-radius: 10px; font-size: 14px; font-weight: 600;
+    color: var(--text2); font-family: inherit; cursor: pointer;
+  }
+
+  /* LIST PAGE - full listen button */
+  .btn-fullplay {
+    display: flex; align-items: center; gap: 8px;
+    background: linear-gradient(135deg,#1A1A2E,#16213E);
+    color: white; border: none; border-radius: 10px;
+    padding: 12px 16px; font-size: 14px; font-weight: 600;
+    font-family: inherit; cursor: pointer; width: 100%; margin-bottom: 1rem;
+    justify-content: center;
+  }
+
+  /* PRACTICE PAGE - full speech listen */
+  .btn-play-all {
+    display: flex; align-items: center; gap: 8px;
+    background: #1A1A2E; color: white; border: none;
+    border-radius: 10px; padding: 10px 16px;
+    font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer;
+    margin-top: 8px; width: 100%; justify-content: center;
+  }
+  .btn-play-all.playing { background: #555; }
+
 </style>
 </head>
 <body>
@@ -738,6 +902,72 @@
     <button class="btn-install" id="btn-install" onclick="handleInstall()">
       <span class="btn-install-icon">📲</span> 홈 화면에 추가하기
     </button>
+  </div>
+</div>
+
+<!-- PAGE: ORG SELECTOR -->
+<div id="page-org" class="page">
+  <div class="org-header">
+    <h2 id="org-header-title">소속 선택</h2>
+    <p id="org-header-sub">본부를 선택해 주세요</p>
+  </div>
+  <div class="org-body">
+    <div class="org-breadcrumb" id="org-breadcrumb"></div>
+    <div class="org-section-title" id="org-section-label">본부</div>
+    <div class="org-grid" id="org-grid"></div>
+    <div class="org-skip"><button onclick="skipOrg()">나중에 선택하기</button></div>
+  </div>
+</div>
+
+<!-- PAGE: FULL PLAY -->
+<div id="page-fullplay" class="page">
+  <div class="fullplay-header">
+    <button class="back-btn" onclick="stopFullPlay(); goToList()" style="color:white;margin-bottom:0.75rem;">← 목록으로</button>
+    <h2>🎧 화법 전체 듣기</h2>
+    <p>1번부터 30번까지 순서대로 자동 재생됩니다</p>
+  </div>
+  <div class="fullplay-player">
+    <div class="fp-now-label">현재 재생 중</div>
+    <div class="fp-now-name" id="fp-now-name">재생 대기 중</div>
+    <div class="fp-now-step" id="fp-now-step">시작 버튼을 눌러주세요</div>
+    <div class="fp-progress-bar"><div class="fp-progress-fill" id="fp-progress-fill" style="width:0%"></div></div>
+    <div class="fp-counter" id="fp-counter">0 / 30</div>
+    <div class="fp-controls">
+      <button class="fp-btn-play" id="fp-btn-play" onclick="toggleFullPlay()">▶ 전체 재생 시작</button>
+      <button class="fp-btn-stop" onclick="stopFullPlay()">■</button>
+    </div>
+  </div>
+  <div class="fp-list" id="fp-list"></div>
+</div>
+
+<!-- PAGE: ADMIN -->
+<div id="page-admin" class="page">
+  <div class="admin-header">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <h2>📊 관리자 대시보드</h2>
+        <p>FP 화법 연습 현황</p>
+      </div>
+      <button onclick="doLogout()" style="background:rgba(255,255,255,0.15);border:none;border-radius:8px;color:white;font-size:12px;font-family:inherit;padding:6px 12px;cursor:pointer;">로그아웃</button>
+    </div>
+  </div>
+  <div class="admin-body">
+    <div class="admin-filter">
+      <select id="admin-filter-hq" onchange="adminFilterChange('hq')"><option value="">전체 본부</option></select>
+      <select id="admin-filter-region" onchange="adminFilterChange('region')"><option value="">전체 지역단</option></select>
+      <select id="admin-filter-branch" onchange="adminFilterChange('branch')"><option value="">전체 지점</option></select>
+    </div>
+    <div class="admin-stat-grid">
+      <div class="admin-stat-card"><div class="admin-stat-num" id="adm-total-fp">0</div><div class="admin-stat-label">전체 FP</div></div>
+      <div class="admin-stat-card"><div class="admin-stat-num" id="adm-avg-done">0</div><div class="admin-stat-label">평균 완료 화법</div></div>
+      <div class="admin-stat-card"><div class="admin-stat-num" id="adm-full-done">0</div><div class="admin-stat-label">30개 완료 FP</div></div>
+      <div class="admin-stat-card"><div class="admin-stat-num" id="adm-zero">0</div><div class="admin-stat-label">미시작 FP</div></div>
+    </div>
+    <div class="admin-section-title">화법별 연습 현황</div>
+    <div class="admin-chart" id="admin-chart"></div>
+    <div class="admin-section-title">FP별 현황</div>
+    <div id="admin-fp-list"></div>
+    <button class="btn-admin-logout" onclick="doLogout()">로그아웃</button>
   </div>
 </div>
 
@@ -808,6 +1038,7 @@
     </div>
   </div>
   <div class="list-body">
+    <button class="btn-fullplay" onclick="stopTTS(); initFullPlayPage(); showPage('fullplay')">🎧 화법 전체 듣기 (1→30번 자동재생)</button>
     <div class="section-title">실전 후킹화법 30선</div>
     <div class="speech-grid" id="speech-grid"></div>
   </div>
@@ -821,7 +1052,9 @@
     </button>
     <div class="practice-title" id="practice-id-label">화법 #1</div>
     <div class="practice-name" id="practice-name-label">화법명</div>
-
+    <button class="btn-play-all" id="btn-play-all" onclick="togglePlayAll()">
+      🔊 전체 한번에 듣기
+    </button>
   </div>
   <div class="practice-body" id="practice-body"></div>
   <div class="practice-footer">
@@ -871,17 +1104,24 @@ function doLogin() {
   const empId = document.getElementById('input-id').value.trim();
   if (!name) { showToast('성명을 입력해 주세요'); return; }
   if (!empId) { showToast('사번을 입력해 주세요'); return; }
-  currentUser = { name, empId };
+
+  // 관리자 체크
+  if (name === '관리자' && empId === '1234567') {
+    currentUser = { name, empId, hq:'', region:'', branch:'' };
+    showAdminPage();
+    return;
+  }
+
+  currentUser = { name, empId, hq:'', region:'', branch:'' };
   const prog = getProgress(empId);
   prog.name = name;
   saveProgress(empId, prog);
-  renderList();
-  showPage('list');
+  showOrgPage();
 }
 
 function doLogout() {
-  stopTTS();
-  currentUser = null;
+  stopTTS(); stopFullPlay();
+  currentUser = null; orgStep = 'hq'; orgSelected = {};
   document.getElementById('input-name').value = '';
   document.getElementById('input-id').value = '';
   showPage('login');
@@ -1153,8 +1393,318 @@ if (document.readyState === 'complete') {
 }
 /* ── END ACCESS KEY + 로딩 ── */
 
-document.getElementById('input-name').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('input-id').focus(); });
-document.getElementById('input-id').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+/* ══════════════════════════════════════════════
+   ORG SELECTOR
+══════════════════════════════════════════════ */
+const ORG = {"서울지역본부":{"서울지역단":["정동지점","로얄지점","불광지점","중앙지점","일산지점","파주지점","김포SFP지점"],"강북지역단":["종로지점","수도지점","강북지점","노원지점","의정부지점","경의지점"],"강동지역단":["잠실지점","강동지점","송파지점","광진지점","이천지점","양평지점"],"강서지역단":["구로지점","신도림지점","목동지점","여의도지점","서울SLC지점"],"강남지역단":["강남지점","도곡지점","사당지점","성남지점","분당지점"]},"경인지역본부":{"인천지역단":["송도지점","주안지점","신주안지점","퍼스트SFP지점","인천지점"],"부평지역단":["부평지점","신부평지점","부평중앙지점","계양지점"],"부천지역단":["송내지점","중동지점","원미지점","신중동지점","시흥지점"],"안양지역단":["안양지점","평촌지점","범계지점","안산지점","단원지점","광명지점","광명중앙지점"],"수원지역단":["수원지점","인계지점","효원지점","송탄지점","동탄지점","오산지점","광교지점"],"강원지역단":["강릉지점","태백지점","속초지점","삼척지점","원주SFP지점","서원주SFP지점","춘천지점"]},"중부지역본부":{"제주지역단":["제주지점","한라지점","탐라지점","서귀포지점"],"대전지역단":["대전지점","도안지점","대덕지점","둔산지점","탄방지점","탄방SFP지점","논산지점"],"충남지역단":["천안지점","동천안지점","서천안지점","아산지점","서산지점","공주지점","세종지점","천안SFP지점","충남SFP지점"],"충북지역단":["청주지점","새청주지점","직지지점","제천지점","충주지점","충북SFP지점","오창SFP(배양)지점"],"광주지역단":["광주미래지점","광주지점","목포지점","해남(배양)지점","신흥지점","호남지점","신광주지점","광주SFP지점"],"전북지역단":["전주지점","익산지점","군산지점","정읍지점","전주SFP지점"],"전남지역단":["여수지점","여천지점","순천지점","동순천지점","광양지점","강진지점"]},"영남지역본부":{"중부산지역단":["중부산지점","연제지점","광복지점","김해지점","양산(배양)지점"],"부산지역단":["전진지점","부산지점","부산ACE지점","동부산지점","부산혁신지점","부산SFP지점"],"창원지역단":["창원지점","동창원지점","팔용지점","마산지점","마산중앙지점","동마산지점","신마산지점"],"경남지역단":["진주지점","남강지점","하동지점","경남지점","거제지점","옥포지점","리더스SFP지점"],"대구지역단":["신화지점","대구지점","영주지점","상주지점","김천지점","대구SFP지점"],"동대구지역단":["황금지점","신성지점","동대구SFP지점","구미SFP지점","경산지점","현풍SFP지점"],"포항지역단":["포항지점","신포항지점","경주지점","영천지점","포항SFP지점"],"울산지역단":["달동지점","무룡지점","울산지점","신정지점"]},"SFP영업본부":{"수도SFP1사업단":["광화문SFP지점","서울SFP지점","한양SFP지점","구리SFP지점","고양SFP지점","정발산SFP지점","LadyPlus지점"],"수도SFP2사업단":["인천SFP지점","안산SFP지점","화성SFP지점","서동탄SFP지점","용인SFP지점","은계SFP지점"]}};
+
+let orgStep = 'hq'; // hq → region → branch
+let orgSelected = {};
+
+function showOrgPage() {
+  orgStep = 'hq'; orgSelected = {};
+  renderOrgGrid();
+  showPage('org');
+}
+
+function renderOrgGrid() {
+  const grid = document.getElementById('org-grid');
+  const bc = document.getElementById('org-breadcrumb');
+  const secLabel = document.getElementById('org-section-label');
+  const headerTitle = document.getElementById('org-header-title');
+  const headerSub = document.getElementById('org-header-sub');
+  grid.innerHTML = ''; bc.innerHTML = '';
+
+  if (orgStep === 'hq') {
+    headerTitle.textContent = '소속 선택'; headerSub.textContent = '본부를 선택해 주세요';
+    secLabel.textContent = '본부';
+    Object.keys(ORG).forEach(hq => {
+      const btn = document.createElement('button');
+      btn.className = 'org-btn';
+      btn.innerHTML = `<span>${hq}</span><span class="org-arrow">›</span>`;
+      btn.onclick = () => { orgSelected.hq = hq; orgStep = 'region'; renderOrgGrid(); };
+      grid.appendChild(btn);
+    });
+  } else if (orgStep === 'region') {
+    headerSub.textContent = '지역단을 선택해 주세요';
+    secLabel.textContent = '지역단';
+    bc.innerHTML = `<strong>${orgSelected.hq}</strong> <span>›</span>`;
+    Object.keys(ORG[orgSelected.hq]).forEach(region => {
+      const btn = document.createElement('button');
+      btn.className = 'org-btn';
+      btn.innerHTML = `<span>${region}</span><span class="org-arrow">›</span>`;
+      btn.onclick = () => { orgSelected.region = region; orgStep = 'branch'; renderOrgGrid(); };
+      grid.appendChild(btn);
+    });
+    const backBtn = document.createElement('button');
+    backBtn.className = 'org-btn'; backBtn.style.color='var(--text3)';
+    backBtn.innerHTML = `<span>← 본부 다시 선택</span>`;
+    backBtn.onclick = () => { orgStep='hq'; orgSelected={}; renderOrgGrid(); };
+    grid.appendChild(backBtn);
+  } else if (orgStep === 'branch') {
+    headerSub.textContent = '지점을 선택해 주세요';
+    secLabel.textContent = '지점';
+    bc.innerHTML = `<strong>${orgSelected.hq}</strong> <span>›</span> <strong>${orgSelected.region}</strong> <span>›</span>`;
+    ORG[orgSelected.hq][orgSelected.region].forEach(branch => {
+      const btn = document.createElement('button');
+      btn.className = 'org-btn';
+      btn.innerHTML = `<span>${branch}</span><span style="font-size:13px;color:var(--primary)">선택</span>`;
+      btn.onclick = () => {
+        orgSelected.branch = branch;
+        currentUser.hq = orgSelected.hq;
+        currentUser.region = orgSelected.region;
+        currentUser.branch = orgSelected.branch;
+        const prog = getProgress(currentUser.empId);
+        prog.hq = orgSelected.hq; prog.region = orgSelected.region; prog.branch = orgSelected.branch;
+        saveProgress(currentUser.empId, prog);
+        renderList(); showPage('list');
+      };
+      grid.appendChild(btn);
+    });
+    const backBtn = document.createElement('button');
+    backBtn.className = 'org-btn'; backBtn.style.color='var(--text3)';
+    backBtn.innerHTML = `<span>← 지역단 다시 선택</span>`;
+    backBtn.onclick = () => { orgStep='region'; renderOrgGrid(); };
+    grid.appendChild(backBtn);
+  }
+}
+
+function skipOrg() { renderList(); showPage('list'); }
+
+/* ══════════════════════════════════════════════
+   FULL PLAY (전체 듣기)
+══════════════════════════════════════════════ */
+let fpPlaying = false;
+let fpCurrentIdx = 0;
+let fpCurrentStep = 0;
+const FP_STEPS = ['buildup','hooking','benefit','closing'];
+const FP_STEP_LABELS = ['빌드업','후킹','베네핏','클로징'];
+
+function initFullPlayPage() {
+  const list = document.getElementById('fp-list');
+  list.innerHTML = '';
+  SPEECHES.forEach((s,i) => {
+    const div = document.createElement('div');
+    div.className = 'fp-item'; div.id = `fp-item-${i}`;
+    div.innerHTML = `<div class="fp-item-num">${s.id}</div><span>${s.name}</span>`;
+    div.onclick = () => { fpCurrentIdx = i; fpCurrentStep = 0; if(!fpPlaying) startFullPlay(); else speakFPStep(); };
+    list.appendChild(div);
+  });
+}
+
+function toggleFullPlay() {
+  if (fpPlaying) { stopFullPlay(); } else { fpCurrentIdx = 0; fpCurrentStep = 0; startFullPlay(); }
+}
+
+function startFullPlay() {
+  if (!('speechSynthesis' in window)) { showToast('음성을 지원하지 않는 브라우저입니다'); return; }
+  fpPlaying = true;
+  document.getElementById('fp-btn-play').textContent = '⏸ 일시정지';
+  speakFPStep();
+}
+
+function speakFPStep() {
+  if (!fpPlaying) return;
+  if (fpCurrentIdx >= SPEECHES.length) { stopFullPlay(); showToast('전체 재생이 완료되었습니다 🎉'); return; }
+  const s = SPEECHES[fpCurrentIdx];
+  const stepKey = FP_STEPS[fpCurrentStep];
+  const text = `${fpCurrentStep===0 ? s.name+'.' : ''} ${FP_STEP_LABELS[fpCurrentStep]}: ${s[stepKey]}`;
+
+  document.getElementById('fp-now-name').textContent = s.name;
+  document.getElementById('fp-now-step').textContent = FP_STEP_LABELS[fpCurrentStep];
+  document.getElementById('fp-counter').textContent = `${fpCurrentIdx+1} / 30`;
+  document.getElementById('fp-progress-fill').style.width = `${((fpCurrentIdx*4+fpCurrentStep)/(30*4))*100}%`;
+
+  document.querySelectorAll('.fp-item').forEach((el,i) => {
+    el.classList.toggle('active', i === fpCurrentIdx);
+    el.classList.toggle('played', i < fpCurrentIdx);
+  });
+  const activeEl = document.getElementById(`fp-item-${fpCurrentIdx}`);
+  if (activeEl) activeEl.scrollIntoView({behavior:'smooth', block:'nearest'});
+
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'ko-KR'; utt.rate = 0.88;
+  utt.onend = () => {
+    if (!fpPlaying) return;
+    fpCurrentStep++;
+    if (fpCurrentStep >= FP_STEPS.length) { fpCurrentStep = 0; fpCurrentIdx++; }
+    speakFPStep();
+  };
+  utt.onerror = () => { if(fpPlaying) { fpCurrentStep=0; fpCurrentIdx++; speakFPStep(); } };
+  speechSynthesis.cancel();
+  speechSynthesis.speak(utt);
+}
+
+function stopFullPlay() {
+  fpPlaying = false;
+  speechSynthesis.cancel();
+  const btn = document.getElementById('fp-btn-play');
+  if (btn) btn.textContent = '▶ 전체 재생 시작';
+  document.querySelectorAll('.fp-item').forEach(el => el.classList.remove('active'));
+}
+
+/* ══════════════════════════════════════════════
+   PRACTICE - PLAY ALL SECTIONS AT ONCE
+══════════════════════════════════════════════ */
+let playAllActive = false;
+let playAllStepIdx = 0;
+
+function togglePlayAll() {
+  if (playAllActive) { stopPlayAll(); return; }
+  playAllActive = true; playAllStepIdx = 0;
+  const btn = document.getElementById('btn-play-all');
+  btn.classList.add('playing'); btn.textContent = '⏹ 정지';
+  playAllStep();
+}
+
+function playAllStep() {
+  if (!playAllActive || !currentSpeech) return;
+  if (playAllStepIdx >= FP_STEPS.length) { stopPlayAll(); return; }
+  const key = FP_STEPS[playAllStepIdx];
+  const label = FP_STEP_LABELS[playAllStepIdx];
+
+  // 해당 스텝 카드 열기
+  document.querySelectorAll('.step-card').forEach(c => c.classList.remove('open'));
+  const cards = document.querySelectorAll('.step-card');
+  if (cards[playAllStepIdx]) cards[playAllStepIdx].classList.add('open');
+
+  // 섹션 버튼 상태 업데이트
+  document.querySelectorAll('.step-tts-btn').forEach(b => { b.classList.remove('playing'); b.innerHTML='<span class="step-tts-icon">🔊</span> 목소리 듣기'; });
+  const btns = document.querySelectorAll('.step-tts-btn');
+  if (btns[playAllStepIdx]) { btns[playAllStepIdx].classList.add('playing'); btns[playAllStepIdx].innerHTML='<span class="step-tts-icon">🔊</span> 재생 중...'; }
+
+  const utt = new SpeechSynthesisUtterance(`${label}: ${currentSpeech[key]}`);
+  utt.lang = 'ko-KR'; utt.rate = 0.88;
+  utt.onend = () => { if (!playAllActive) return; playAllStepIdx++; playAllStep(); };
+  utt.onerror = () => { if (playAllActive) { playAllStepIdx++; playAllStep(); } };
+  speechSynthesis.cancel();
+  speechSynthesis.speak(utt);
+}
+
+function stopPlayAll() {
+  playAllActive = false; playAllStepIdx = 0;
+  speechSynthesis.cancel();
+  const btn = document.getElementById('btn-play-all');
+  if (btn) { btn.classList.remove('playing'); btn.textContent = '🔊 전체 한번에 듣기'; }
+  document.querySelectorAll('.step-tts-btn').forEach(b => { b.classList.remove('playing'); b.innerHTML='<span class="step-tts-icon">🔊</span> 목소리 듣기'; });
+}
+
+/* ══════════════════════════════════════════════
+   ADMIN PAGE
+══════════════════════════════════════════════ */
+function showAdminPage() {
+  // 필터 초기화
+  const hqSel = document.getElementById('admin-filter-hq');
+  hqSel.innerHTML = '<option value="">전체 본부</option>';
+  Object.keys(ORG).forEach(hq => { const o=document.createElement('option'); o.value=hq; o.textContent=hq; hqSel.appendChild(o); });
+  document.getElementById('admin-filter-region').innerHTML = '<option value="">전체 지역단</option>';
+  document.getElementById('admin-filter-branch').innerHTML = '<option value="">전체 지점</option>';
+  renderAdminDashboard();
+  showPage('admin');
+}
+
+function adminFilterChange(level) {
+  const hq = document.getElementById('admin-filter-hq').value;
+  const regionSel = document.getElementById('admin-filter-region');
+  const branchSel = document.getElementById('admin-filter-branch');
+  if (level === 'hq') {
+    regionSel.innerHTML = '<option value="">전체 지역단</option>';
+    branchSel.innerHTML = '<option value="">전체 지점</option>';
+    if (hq && ORG[hq]) {
+      Object.keys(ORG[hq]).forEach(r => { const o=document.createElement('option'); o.value=r; o.textContent=r; regionSel.appendChild(o); });
+    }
+  } else if (level === 'region') {
+    branchSel.innerHTML = '<option value="">전체 지점</option>';
+    const region = regionSel.value;
+    if (hq && region && ORG[hq] && ORG[hq][region]) {
+      ORG[hq][region].forEach(b => { const o=document.createElement('option'); o.value=b; o.textContent=b; branchSel.appendChild(o); });
+    }
+  }
+  renderAdminDashboard();
+}
+
+function getAllUserData() {
+  const users = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (!key.startsWith('hanwha_fp_')) continue;
+    try {
+      const data = JSON.parse(localStorage.getItem(key));
+      if (data && data.name) users.push(data);
+    } catch {}
+  }
+  return users;
+}
+
+function renderAdminDashboard() {
+  const hqF = document.getElementById('admin-filter-hq').value;
+  const regionF = document.getElementById('admin-filter-region').value;
+  const branchF = document.getElementById('admin-filter-branch').value;
+
+  let users = getAllUserData().filter(u => u.name !== '관리자');
+  if (hqF) users = users.filter(u => u.hq === hqF);
+  if (regionF) users = users.filter(u => u.region === regionF);
+  if (branchF) users = users.filter(u => u.branch === branchF);
+
+  const total = users.length;
+  const doneArr = users.map(u => (u.done||[]).length);
+  const avg = total ? Math.round(doneArr.reduce((a,b)=>a+b,0)/total) : 0;
+  const fullDone = users.filter(u=>(u.done||[]).length===30).length;
+  const zero = users.filter(u=>(u.done||[]).length===0).length;
+
+  document.getElementById('adm-total-fp').textContent = total;
+  document.getElementById('adm-avg-done').textContent = avg;
+  document.getElementById('adm-full-done').textContent = fullDone;
+  document.getElementById('adm-zero').textContent = zero;
+
+  // 화법별 차트
+  const chart = document.getElementById('admin-chart');
+  if (total === 0) { chart.innerHTML = '<div class="admin-empty">등록된 FP 데이터가 없습니다</div>'; }
+  else {
+    const counts = SPEECHES.map(s => users.filter(u=>(u.done||[]).includes(s.id)).length);
+    const max = Math.max(...counts, 1);
+    chart.innerHTML = counts.map((cnt,i) =>
+      `<div class="admin-bar-row">
+        <div class="admin-bar-label">${i+1}. ${SPEECHES[i].name.replace(' 화법','')}</div>
+        <div class="admin-bar-wrap"><div class="admin-bar-fill" style="width:${Math.round(cnt/max*100)}%"></div></div>
+        <div class="admin-bar-val">${cnt}</div>
+      </div>`
+    ).join('');
+  }
+
+  // FP별 목록
+  const fpList = document.getElementById('admin-fp-list');
+  if (total === 0) { fpList.innerHTML = '<div class="admin-empty">해당 조건의 FP가 없습니다</div>'; return; }
+  const sorted = [...users].sort((a,b)=>(b.done||[]).length-(a.done||[]).length);
+  fpList.innerHTML = sorted.map(u => {
+    const cnt = (u.done||[]).length;
+    const pct = Math.round(cnt/30*100);
+    const loc = [u.hq, u.region, u.branch].filter(Boolean).join(' › ') || '소속 미입력';
+    return `<div class="admin-fp-card">
+      <div class="admin-fp-avatar">${u.name.charAt(0)}</div>
+      <div class="admin-fp-info">
+        <div class="admin-fp-name">${u.name} <span style="font-size:11px;color:var(--text3);font-weight:400">${u.empId||''}</span></div>
+        <div class="admin-fp-sub">${loc}</div>
+        <div class="admin-fp-mini-bar"><div class="admin-fp-mini-fill" style="width:${pct}%"></div></div>
+      </div>
+      <div class="admin-fp-cnt">${cnt}<span style="font-size:11px;color:var(--text3)">/30</span></div>
+    </div>`;
+  }).join('');
+}
+
+/* ─────────────────────────────────────────── */
+// fullplay 페이지 진입 시 초기화는 btn-fullplay onclick에서 처리
+
+// stopTTS 확장: playAll도 정지
+const _origStopTTS = stopTTS;
+function stopTTS() {
+  _origStopTTS();
+  if (playAllActive) stopPlayAll();
+}
+/* ─────────────────────────────────────────── */
+
+document.getElementById('input-name').addEventListener('keydown', e => { if (e.key==='Enter') document.getElementById('input-id').focus(); });
+document.getElementById('input-id').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
 </script>
 </body>
 </html>
