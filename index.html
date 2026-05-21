@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="화법연습">
+<meta name="apple-mobile-web-app-title" content="링크화법">
 <meta name="theme-color" content="#E8310A">
 <link rel="manifest" href="manifest.json">
 <style>
@@ -1073,18 +1073,24 @@ let currentSpeech = null;
 let ttsActive = false;
 let ttsUtterance = null;
 
+/* ══════════════════════════════════════════════
+   로컬 스토리지 데이터 관리
+══════════════════════════════════════════════ */
 function getStorageKey(empId) { return `hanwha_fp_${empId}`; }
 
 function getProgress(empId) {
   try {
     const raw = localStorage.getItem(getStorageKey(empId));
-    return raw ? JSON.parse(raw) : { name: '', done: [] };
-  } catch { return { name: '', done: [] }; }
+    return raw ? JSON.parse(raw) : { name: '', done: [], hq:'', region:'', branch:'' };
+  } catch { return { name: '', done: [], hq:'', region:'', branch:'' }; }
 }
 
 function saveProgress(empId, data) {
   try { localStorage.setItem(getStorageKey(empId), JSON.stringify(data)); } catch {}
 }
+
+function getProgressLocal(empId) { return getProgress(empId); }
+
 
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1105,7 +1111,6 @@ function doLogin() {
   if (!name) { showToast('성명을 입력해 주세요'); return; }
   if (!empId) { showToast('사번을 입력해 주세요'); return; }
 
-  // 관리자 체크
   if (name === '관리자' && empId === '1234567') {
     currentUser = { name, empId, hq:'', region:'', branch:'' };
     showAdminPage();
@@ -1115,6 +1120,7 @@ function doLogin() {
   currentUser = { name, empId, hq:'', region:'', branch:'' };
   const prog = getProgress(empId);
   prog.name = name;
+  if (prog.hq) { currentUser.hq = prog.hq; currentUser.region = prog.region; currentUser.branch = prog.branch; }
   saveProgress(empId, prog);
   showOrgPage();
 }
@@ -1304,22 +1310,10 @@ function initInstallButton() {
 }
 
 function handleInstall() {
-  if (deferredPrompt) {
-    // Chrome이 자동 설치 지원하면 바로 실행
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(choice => {
-      if (choice.outcome === 'accepted') {
-        document.getElementById('btn-install').classList.remove('visible');
-      }
-      deferredPrompt = null;
-    });
+  if (isIOS()) {
+    document.getElementById('ios-modal').classList.add('open');
   } else {
-    // 자동 설치 불가 → 기기별 안내 팝업 표시
-    if (isIOS()) {
-      document.getElementById('ios-modal').classList.add('open');
-    } else {
-      document.getElementById('android-modal').classList.add('open');
-    }
+    document.getElementById('android-modal').classList.add('open');
   }
 }
 
