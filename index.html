@@ -176,6 +176,23 @@
     backdrop-filter: blur(4px);
   }
 
+  .header-change-org {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 8px;
+    color: rgba(255,255,255,0.85);
+    font-size: 11px;
+    font-family: inherit;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
+  .header-org {
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    margin-top: 3px;
+  }
+
   .progress-wrap { margin-top: 0.5rem; }
   .progress-label {
     display: flex;
@@ -1024,8 +1041,12 @@
       <div>
         <div class="header-greeting" id="list-greeting">안녕하세요,</div>
         <div class="header-name" id="list-name">FP님</div>
+        <div class="header-org" id="list-org"></div>
       </div>
-      <button class="header-logout" onclick="doLogout()">로그아웃</button>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+        <button class="header-logout" onclick="doLogout()">로그아웃</button>
+        <button class="header-change-org" onclick="changeOrg()">소속 변경</button>
+      </div>
     </div>
     <div class="progress-wrap">
       <div class="progress-label">
@@ -1120,9 +1141,19 @@ function doLogin() {
   currentUser = { name, empId, hq:'', region:'', branch:'' };
   const prog = getProgress(empId);
   prog.name = name;
-  if (prog.hq) { currentUser.hq = prog.hq; currentUser.region = prog.region; currentUser.branch = prog.branch; }
-  saveProgress(empId, prog);
-  showOrgPage();
+  if (prog.hq) {
+    // 이전에 소속을 선택한 적 있음 → 바로 목록으로
+    currentUser.hq = prog.hq;
+    currentUser.region = prog.region;
+    currentUser.branch = prog.branch;
+    saveProgress(empId, prog);
+    renderList();
+    showPage('list');
+  } else {
+    // 처음 로그인 → 소속 선택 페이지로
+    saveProgress(empId, prog);
+    showOrgPage();
+  }
 }
 
 function doLogout() {
@@ -1138,6 +1169,12 @@ function renderList() {
   const done = new Set(prog.done || []);
   document.getElementById('list-greeting').textContent = `안녕하세요, ${currentUser.empId}님!`;
   document.getElementById('list-name').textContent = `${currentUser.name} FP`;
+
+  // 소속 표시
+  const orgEl = document.getElementById('list-org');
+  const orgParts = [currentUser.hq, currentUser.region, currentUser.branch].filter(Boolean);
+  orgEl.textContent = orgParts.length ? orgParts.join(' › ') : '소속 미선택';
+
   const cnt = done.size;
   document.getElementById('progress-text').textContent = `${cnt} / 30`;
   document.getElementById('progress-fill').style.width = `${Math.round(cnt / 30 * 100)}%`;
@@ -1158,6 +1195,15 @@ function renderList() {
     `;
     grid.appendChild(card);
   });
+}
+
+function changeOrg() {
+  // 소속 선택 페이지로 이동 (선택 완료 후 목록으로 돌아옴)
+  orgStep = 'hq'; orgSelected = {};
+  // 기존 선택값 초기화
+  currentUser.hq = ''; currentUser.region = ''; currentUser.branch = '';
+  renderOrgGrid();
+  showPage('org');
 }
 
 function openPractice(id) {
