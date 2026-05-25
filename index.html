@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>한화손보 FP 화법 연습</title>
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="링크화법">
+<meta name="theme-color" content="#E8310A">
+<link rel="manifest" href="manifest.json">
+<style>
+  :root {
+    --primary: #E8310A;
+    --primary-light: #FF5733;
+    --primary-bg: #FFF5F3;
+    --accent: #FF8C00;
+    --dark: #1A1A2E;
+    --surface: #FFFFFF;
+    --surface2: #F8F8FA;
+    --border: rgba(0,0,0,0.08);
+    --text: #1A1A2E;
+    --text2: #666680;
+    --text3: #9999AA;
+    --shadow: 0 2px 16px rgba(232,49,10,0.08);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  
+  body {
+    font-family: -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    background: var(--surface2);
+    color: var(--text);
+    min-height: 100vh;
+    max-width: 480px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  /* PAGE SYSTEM */
+  .page { display: none; min-height: 100vh; flex-direction: column; }
+  .page.active { display: flex; }
+
+  /* PAGE 1 - LOGIN */
+  #page-login {
+    background: linear-gradient(160deg, #E8310A 0%, #FF5733 40%, #FF8C00 100%);
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+  }
+
+  .login-card {
+    background: white;
+    border-radius: 24px;
+    padding: 2.5rem 2rem;
+    width: 100%;
+    max-width: 360px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 2rem;
+  }
+
+  .logo-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #E8310A, #FF8C00);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 22px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .logo-text { flex: 1; }
+  .logo-text h1 { font-size: 17px; font-weight: 700; color: var(--text); line-height: 1.2; }
+  .logo-text p { font-size: 12px; color: var(--text2); margin-top: 2px; }
+
+  .field-group { margin-bottom: 1.25rem; }
+  .field-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text2);
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+  }
+
+  .field-group input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 16px;
+    font-family: inherit;
+    color: var(--text);
+    background: var(--surface2);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+
+  .field-group input:focus {
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(232,49,10,0.1);
+  }
+
+  .field-group input::placeholder { color: var(--text3); }
+
+  .btn-primary {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #E8310A, #FF5733);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 16px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    margin-top: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-primary:active { transform: scale(0.98); opacity: 0.9; }
+
+  .login-note {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 1.25rem;
+  }
+
+  /* PAGE 2 - LIST */
+  #page-list { background: var(--surface2); }
+
+  .list-header {
+    background: linear-gradient(135deg, #E8310A, #FF5733);
+    padding: 3rem 1.5rem 1.5rem;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .header-greeting { font-size: 13px; opacity: 0.85; }
+  .header-name { font-size: 20px; font-weight: 700; line-height: 1; }
+
+  .header-logout {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 12px;
+    font-family: inherit;
+    padding: 6px 12px;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+  }
+
+  .header-change-org {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 8px;
+    color: rgba(255,255,255,0.85);
+    font-size: 11px;
+    font-family: inherit;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
+  .header-org {
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    margin-top: 3px;
+  }
+
+  .progress-wrap { margin-top: 0.5rem; }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    opacity: 0.85;
+    margin-bottom: 6px;
+  }
+
+  .progress-bar {
+    height: 6px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: white;
+    border-radius: 3px;
+    transition: width 0.5s ease;
+  }
+
+  .list-body { padding: 1rem 1.25rem; flex: 1; }
+
+  .section-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0.75rem 0 0.75rem;
+  }
+
+  .speech-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .speech-card {
+    background: white;
+    border-radius: var(--radius-sm);
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    border: 1.5px solid transparent;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+
+  .speech-card:active { transform: scale(0.98); }
+
+  .speech-card.done {
+    border-color: rgba(232,49,10,0.15);
+    background: #FFFAF9;
+  }
+
+  .card-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text2);
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+
+  .speech-card.done .card-num {
+    background: linear-gradient(135deg, #E8310A, #FF5733);
+    color: white;
+  }
+
+  .card-info { flex: 1; min-width: 0; }
+  .card-name { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.3; }
+  .card-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+  .card-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+
+  .card-badge.done-badge {
+    background: rgba(232,49,10,0.1);
+    color: var(--primary);
+  }
+
+  .card-badge.todo-badge {
+    background: var(--surface2);
+    color: var(--text3);
+  }
+
+  /* PAGE 3 - PRACTICE */
+  #page-practice { background: var(--surface2); }
+
+  .practice-header {
+    background: white;
+    padding: 3rem 1.5rem 1rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    font-size: 15px;
+    color: var(--primary);
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 1rem;
+  }
+
+  .back-arrow { font-size: 18px; }
+
+  .practice-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--primary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .practice-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .tts-icon { font-size: 16px; }
+
+  .step-tts-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0.75rem 0 0.25rem;
+    background: var(--surface2);
+    color: var(--text2);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .step-tts-btn:active { transform: scale(0.97); }
+  .step-tts-btn.playing {
+    background: #1A1A2E;
+    color: white;
+    border-color: #1A1A2E;
+  }
+
+  .step-tts-icon { font-size: 14px; }
+
+  .practice-body { padding: 1.25rem; display: flex; flex-direction: column; gap: 12px; }
+
+  .step-card {
+    background: white;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .step-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+
+  .step-buildup { background: #FFF3CD; color: #856404; }
+  .step-hooking { background: #FFEBEE; color: #C62828; }
+  .step-benefit { background: #E8F5E9; color: #2E7D32; }
+  .step-closing { background: #E3F2FD; color: #1565C0; }
+
+  .step-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .step-buildup .step-dot { background: #856404; }
+  .step-hooking .step-dot { background: #C62828; }
+  .step-benefit .step-dot { background: #2E7D32; }
+  .step-closing .step-dot { background: #1565C0; }
+
+  .step-label { font-size: 14px; font-weight: 600; color: var(--text); flex: 1; }
+
+  .step-chevron {
+    color: var(--text3);
+    font-size: 18px;
+    transition: transform 0.3s;
+  }
+
+  .step-card.open .step-chevron { transform: rotate(180deg); }
+
+  .step-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .step-card.open .step-content { max-height: 600px; }
+
+  .step-text {
+    padding: 0 1.25rem 1.25rem;
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text);
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+  }
+
+  .practice-footer {
+    padding: 1.25rem;
+    padding-bottom: calc(1.25rem + env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn-complete {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #E8310A, #FF5733);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 16px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .btn-complete.completed {
+    background: linear-gradient(135deg, #2E7D32, #43A047);
+  }
+
+  .btn-back-list {
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    color: var(--text2);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #1A1A2E;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* NAV INDICATOR */
+  .nav-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 1rem;
+  }
+
+  .nav-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.4);
+    transition: width 0.3s, background 0.3s;
+  }
+
+  .nav-dot.active { width: 18px; background: white; }
+
+  /* EMPTY STATE */
+  .empty-done {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text3);
+    font-size: 14px;
+  }
+
+  /* PWA INSTALL BUTTON */
+  .btn-install {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    margin-top: 10px;
+    padding: 13px;
+    background: transparent;
+    border: 1.5px solid rgba(232,49,10,0.3);
+    border-radius: var(--radius-sm);
+    color: var(--primary);
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-install.visible { display: flex; }
+  .btn-install:active { background: var(--primary-bg); }
+  .btn-install-icon { font-size: 17px; }
+
+  /* IOS INSTALL MODAL */
+  .ios-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 2000;
+    align-items: flex-end;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  .ios-modal-overlay.open { display: flex; }
+  .ios-modal {
+    background: white;
+    border-radius: 24px 24px 0 0;
+    padding: 2rem 1.5rem calc(2rem + env(safe-area-inset-bottom));
+    width: 100%;
+    max-width: 480px;
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .ios-modal-handle {
+    width: 40px; height: 4px;
+    background: #DDD;
+    border-radius: 2px;
+    margin: 0 auto 1.5rem;
+  }
+  .ios-modal h3 {
+    font-size: 18px; font-weight: 700;
+    color: var(--text); margin-bottom: 0.5rem;
+  }
+  .ios-modal p {
+    font-size: 14px; color: var(--text2);
+    line-height: 1.6; margin-bottom: 1.5rem;
+  }
+  .ios-steps { display: flex; flex-direction: column; gap: 12px; margin-bottom: 1.5rem; }
+  .ios-step {
+    display: flex; align-items: flex-start; gap: 12px;
+    background: var(--surface2); border-radius: 12px; padding: 14px;
+  }
+  .ios-step-num {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: linear-gradient(135deg, #E8310A, #FF5733);
+    color: white; font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .ios-step-text { font-size: 14px; color: var(--text); line-height: 1.5; }
+  .ios-step-text strong { color: var(--primary); }
+  .ios-step-icon { font-size: 18px; }
+  .btn-ios-close {
+    width: 100%; padding: 14px;
+    background: var(--surface2); border: none;
+    border-radius: var(--radius-sm);
+    font-size: 15px; font-weight: 600;
+    color: var(--text2); font-family: inherit; cursor: pointer;
+  }
+  /* LOADING SCREEN */
+  #loading-screen {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(160deg, #E8310A 0%, #FF5733 40%, #FF8C00 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.4s ease;
+    padding: 2rem;
+  }
+  #loading-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .loading-icon {
+    width: 72px;
+    height: 72px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 1.5rem;
+  }
+  .loading-text {
+    font-size: 17px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+  .loading-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 2rem;
+  }
+  .loading-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* 접속코드 입력 박스 (로딩 화면 위에 표시) */
+  #access-box {
+    display: none;
+    background: white;
+    border-radius: 20px;
+    padding: 2rem 1.75rem;
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+  #access-box.visible { display: block; }
+  .access-lock { font-size: 40px; margin-bottom: 0.75rem; }
+  .access-title { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 0.4rem; }
+  .access-desc { font-size: 13px; color: var(--text2); margin-bottom: 1.25rem; line-height: 1.5; }
+  .access-input {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 18px;
+    font-family: inherit;
+    text-align: center;
+    letter-spacing: 0.2em;
+    outline: none;
+    margin-bottom: 10px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .access-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(232,49,10,0.1);
+  }
+  .access-input.error { border-color: #e53935; box-shadow: 0 0 0 3px rgba(229,57,53,0.12); }
+  .access-error { font-size: 12px; color: #e53935; font-weight: 600; margin-bottom: 10px; min-height: 18px; }
+  .access-submit {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #E8310A, #FF5733);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .access-submit:active { opacity: 0.9; }
+
+  /* ORG SELECTOR PAGE */
+  #page-org { background: var(--surface2); }
+  .org-header {
+    background: linear-gradient(135deg, #E8310A, #FF5733);
+    padding: 3rem 1.5rem 1.5rem;
+    color: white;
+  }
+  .org-header h2 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .org-header p { font-size: 13px; opacity: 0.85; }
+  .org-body { padding: 1.25rem; }
+  .org-breadcrumb {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; color: var(--text2); margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  .org-breadcrumb span { color: var(--text3); }
+  .org-breadcrumb strong { color: var(--primary); font-weight: 600; }
+  .org-section-title {
+    font-size: 12px; font-weight: 700; color: var(--text3);
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px;
+  }
+  .org-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.25rem; }
+  .org-btn {
+    background: white; border: 1.5px solid var(--border);
+    border-radius: 12px; padding: 14px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    cursor: pointer; transition: border-color 0.15s, background 0.15s;
+    font-size: 15px; font-weight: 600; color: var(--text);
+    font-family: inherit;
+  }
+  .org-btn:active { background: var(--primary-bg); border-color: var(--primary); }
+  .org-btn .org-arrow { color: var(--text3); font-size: 18px; }
+  .org-btn.selected { background: var(--primary-bg); border-color: var(--primary); color: var(--primary); }
+  .org-skip { text-align: center; margin-top: 0.5rem; }
+  .org-skip button {
+    background: none; border: none; color: var(--text3);
+    font-size: 13px; font-family: inherit; cursor: pointer;
+    text-decoration: underline; padding: 8px;
+  }
+
+  /* FULL LISTEN PAGE */
+  #page-fullplay { background: var(--surface2); }
+  .fullplay-header {
+    background: linear-gradient(135deg, #E8310A, #FF5733);
+    padding: 3rem 1.5rem 1.5rem; color: white;
+  }
+  .fullplay-header h2 { font-size: 20px; font-weight: 700; }
+  .fullplay-header p { font-size: 13px; opacity: 0.85; margin-top: 4px; }
+  .fullplay-player {
+    background: white; margin: 1.25rem; border-radius: 16px;
+    padding: 1.5rem; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .fp-now-label { font-size: 11px; font-weight: 700; color: var(--primary);
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .fp-now-name { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .fp-now-step { font-size: 13px; color: var(--text2); margin-bottom: 1.25rem; }
+  .fp-progress-bar { height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; margin-bottom: 1rem; }
+  .fp-progress-fill { height: 100%; background: linear-gradient(90deg, #E8310A, #FF8C00); border-radius: 3px; transition: width 0.3s; }
+  .fp-counter { font-size: 12px; color: var(--text3); text-align: right; margin-bottom: 1.25rem; }
+  .fp-controls { display: flex; gap: 10px; }
+  .fp-btn-play {
+    flex: 1; padding: 14px; background: linear-gradient(135deg, #E8310A, #FF5733);
+    color: white; border: none; border-radius: 10px;
+    font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer;
+  }
+  .fp-btn-stop {
+    padding: 14px 18px; background: var(--surface2); border: 1.5px solid var(--border);
+    border-radius: 10px; font-size: 15px; font-family: inherit; cursor: pointer; color: var(--text2);
+  }
+  .fp-list { padding: 0 1.25rem 1.25rem; display: flex; flex-direction: column; gap: 6px; }
+  .fp-item {
+    background: white; border-radius: 10px; padding: 12px 14px;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px; color: var(--text2); cursor: pointer;
+    border: 1.5px solid transparent;
+  }
+  .fp-item.active { border-color: var(--primary); color: var(--primary); font-weight: 600; background: var(--primary-bg); }
+  .fp-item.played { color: var(--text3); }
+  .fp-item-num { width: 24px; height: 24px; border-radius: 6px; background: var(--surface2);
+    display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .fp-item.active .fp-item-num { background: var(--primary); color: white; }
+
+  /* ADMIN PAGE */
+  #page-admin { background: var(--surface2); }
+  .admin-header {
+    background: linear-gradient(135deg, #1A1A2E, #16213E);
+    padding: 3rem 1.5rem 1.5rem; color: white;
+  }
+  .admin-header h2 { font-size: 20px; font-weight: 700; }
+  .admin-header p { font-size: 13px; opacity: 0.7; margin-top: 4px; }
+  .admin-body { padding: 1.25rem; }
+  .admin-filter {
+    background: white; border-radius: 12px; padding: 1rem 1.25rem;
+    margin-bottom: 1rem; display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .admin-filter select {
+    flex: 1; min-width: 120px; padding: 8px 10px;
+    border: 1.5px solid var(--border); border-radius: 8px;
+    font-size: 13px; font-family: inherit; color: var(--text);
+    background: var(--surface2); outline: none;
+  }
+  .admin-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1rem; }
+  .admin-stat-card {
+    background: white; border-radius: 12px; padding: 1rem;
+    text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+  .admin-stat-num { font-size: 28px; font-weight: 800; color: var(--primary); }
+  .admin-stat-label { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .admin-section-title {
+    font-size: 13px; font-weight: 700; color: var(--text);
+    margin: 1rem 0 0.5rem;
+  }
+  .admin-fp-card {
+    background: white; border-radius: 10px; padding: 12px 14px;
+    display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .admin-fp-avatar {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: linear-gradient(135deg, #E8310A, #FF5733);
+    color: white; font-size: 14px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .admin-fp-info { flex: 1; min-width: 0; }
+  .admin-fp-name { font-size: 14px; font-weight: 700; color: var(--text); }
+  .admin-fp-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
+  .admin-fp-mini-bar { height: 4px; background: var(--surface2); border-radius: 2px; margin-top: 4px; overflow: hidden; }
+  .admin-fp-mini-fill { height: 100%; background: linear-gradient(90deg,#E8310A,#FF8C00); border-radius: 2px; }
+  .admin-fp-cnt { font-size: 14px; font-weight: 700; color: var(--primary); white-space: nowrap; }
+  .admin-chart { background: white; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
+  .admin-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .admin-bar-label { font-size: 12px; color: var(--text2); width: 80px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .admin-bar-wrap { flex: 1; height: 18px; background: var(--surface2); border-radius: 4px; overflow: hidden; }
+  .admin-bar-fill { height: 100%; background: linear-gradient(90deg,#E8310A,#FF8C00); border-radius: 4px; transition: width 0.5s; }
+  .admin-bar-val { font-size: 12px; font-weight: 700; color: var(--text2); width: 28px; text-align: right; flex-shrink: 0; }
+  .admin-empty { text-align: center; padding: 2rem; color: var(--text3); font-size: 14px; }
+  .btn-admin-logout {
+    width: 100%; margin-top: 1rem; padding: 13px;
+    background: transparent; border: 1.5px solid var(--border);
+    border-radius: 10px; font-size: 14px; font-weight: 600;
+    color: var(--text2); font-family: inherit; cursor: pointer;
+  }
+
+  /* LIST PAGE - full listen button */
+  .btn-fullplay {
+    display: flex; align-items: center; gap: 8px;
+    background: linear-gradient(135deg,#1A1A2E,#16213E);
+    color: white; border: none; border-radius: 10px;
+    padding: 12px 16px; font-size: 14px; font-weight: 600;
+    font-family: inherit; cursor: pointer; width: 100%; margin-bottom: 1rem;
+    justify-content: center;
+  }
+
+  /* PRACTICE PAGE - full speech listen */
+  .btn-play-all {
+    display: flex; align-items: center; gap: 8px;
+    background: #1A1A2E; color: white; border: none;
+    border-radius: 10px; padding: 10px 16px;
+    font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer;
+    margin-top: 8px; width: 100%; justify-content: center;
+  }
+  .btn-play-all.playing { background: #555; }
+
+</style>
+</head>
+<body>
+
+<!-- LOADING SCREEN (로딩 + 접속코드 입력 통합) -->
+<div id="loading-screen">
+  <!-- 로딩 중 상태 -->
+  <div id="loading-spinner-wrap">
+    <div class="loading-icon">화</div>
+    <div class="loading-text">로딩 중입니다</div>
+    <div class="loading-sub">잠시만 기다려 주세요</div>
+    <div class="loading-spinner"></div>
+  </div>
+  <!-- 접속코드 입력 상태 -->
+  <div id="access-box">
+    <div class="access-lock">🔐</div>
+    <div class="access-title">접속 코드를 입력하세요</div>
+    <div class="access-desc">한화손보 FP 전용 페이지입니다.<br>관리자에게 코드를 문의해 주세요.</div>
+    <input class="access-input" id="access-input" type="password" inputmode="numeric"
+      placeholder="• • • •" maxlength="20"
+      onkeydown="if(event.key==='Enter') submitAccessKey()" />
+    <div class="access-error" id="access-error"></div>
+    <button class="access-submit" onclick="submitAccessKey()">확인</button>
+  </div>
+</div>
+
+<!-- PAGE 1: LOGIN -->
+<div id="page-login" class="page active">
+  <div class="login-card">
+    <div class="logo-wrap">
+      <div class="logo-icon">화</div>
+      <div class="logo-text">
+        <h1>한화손보 FP</h1>
+        <p>실전 후킹화법 연습 시스템</p>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>성명</label>
+      <input type="text" id="input-name" placeholder="이름을 입력하세요" autocomplete="name" />
+    </div>
+    <div class="field-group">
+      <label>사번</label>
+      <input type="text" id="input-id" placeholder="사번을 입력하세요" autocomplete="off" inputmode="text" />
+    </div>
+    <button class="btn-primary" onclick="doLogin()">연습 시작하기</button>
+    <p class="login-note">입력하신 사번으로 연습 현황이 저장됩니다</p>
+    <button class="btn-install" id="btn-install" onclick="handleInstall()">
+      <span class="btn-install-icon">📲</span> 홈 화면에 추가하기
+    </button>
+  </div>
+</div>
+
+<!-- PAGE: ORG SELECTOR -->
+<div id="page-org" class="page">
+  <div class="org-header">
+    <h2 id="org-header-title">소속 선택</h2>
+    <p id="org-header-sub">본부를 선택해 주세요</p>
+  </div>
+  <div class="org-body">
+    <div class="org-breadcrumb" id="org-breadcrumb"></div>
+    <div class="org-section-title" id="org-section-label">본부</div>
+    <div class="org-grid" id="org-grid"></div>
+    <div class="org-skip"><button onclick="skipOrg()">나중에 선택하기</button></div>
+  </div>
+</div>
+
+<!-- PAGE: FULL PLAY -->
+<div id="page-fullplay" class="page">
+  <div class="fullplay-header">
+    <button class="back-btn" onclick="stopFullPlay(); goToList()" style="color:white;margin-bottom:0.75rem;">← 목록으로</button>
+    <h2>🎧 화법 전체 듣기</h2>
+    <p>1번부터 30번까지 순서대로 자동 재생됩니다</p>
+  </div>
+  <div class="fullplay-player">
+    <div class="fp-now-label">현재 재생 중</div>
+    <div class="fp-now-name" id="fp-now-name">재생 대기 중</div>
+    <div class="fp-now-step" id="fp-now-step">시작 버튼을 눌러주세요</div>
+    <div class="fp-progress-bar"><div class="fp-progress-fill" id="fp-progress-fill" style="width:0%"></div></div>
+    <div class="fp-counter" id="fp-counter">0 / 30</div>
+    <div class="fp-controls">
+      <button class="fp-btn-play" id="fp-btn-play" onclick="toggleFullPlay()">▶ 전체 재생 시작</button>
+      <button class="fp-btn-stop" onclick="stopFullPlay()">■</button>
+    </div>
+  </div>
+  <div class="fp-list" id="fp-list"></div>
+</div>
+
+<!-- PAGE: ADMIN -->
+<div id="page-admin" class="page">
+  <div class="admin-header">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <h2>📊 관리자 대시보드</h2>
+        <p>FP 화법 연습 현황</p>
+      </div>
+      <button onclick="doLogout()" style="background:rgba(255,255,255,0.15);border:none;border-radius:8px;color:white;font-size:12px;font-family:inherit;padding:6px 12px;cursor:pointer;">로그아웃</button>
+    </div>
+  </div>
+  <div class="admin-body">
+    <div class="admin-filter">
+      <select id="admin-filter-hq" onchange="adminFilterChange('hq')"><option value="">전체 본부</option></select>
+      <select id="admin-filter-region" onchange="adminFilterChange('region')"><option value="">전체 지역단</option></select>
+      <select id="admin-filter-branch" onchange="adminFilterChange('branch')"><option value="">전체 지점</option></select>
+    </div>
+    <div class="admin-stat-grid">
+      <div class="admin-stat-card"><div class="admin-stat-num" id="adm-total-fp">0</div><div class="admin-stat-label">전체 FP</div></div>
+      <div class="admin-stat-card"><div class="admin-stat-num" id="adm-avg-done">0</div><div class="admin-stat-label">평균 완료 화법</div></div>
+      <div class="admin-stat-card"><div class="admin-stat-num" id="adm-full-done">0</div><div class="admin-stat-label">30개 완료 FP</div></div>
+      <div class="admin-stat-card"><div class="admin-stat-num" id="adm-zero">0</div><div class="admin-stat-label">미시작 FP</div></div>
+    </div>
+    <div class="admin-section-title">화법별 연습 현황</div>
+    <div class="admin-chart" id="admin-chart"></div>
+    <div class="admin-section-title">FP별 현황</div>
+    <div id="admin-fp-list"></div>
+    <button class="btn-admin-logout" onclick="doLogout()">로그아웃</button>
+  </div>
+</div>
+
+<!-- ANDROID INSTALL MODAL -->
+<div class="ios-modal-overlay" id="android-modal" onclick="closeAndroidModal(event)">
+  <div class="ios-modal">
+    <div class="ios-modal-handle"></div>
+    <h3>📲 홈 화면에 추가하기</h3>
+    <p>아래 순서대로 따라하면 앱처럼 바로 실행할 수 있어요!</p>
+    <div class="ios-steps">
+      <div class="ios-step">
+        <div class="ios-step-num">1</div>
+        <div class="ios-step-text">Chrome 주소창 오른쪽 <strong>점 3개(⋮)</strong> 메뉴를 탭하세요</div>
+      </div>
+      <div class="ios-step">
+        <div class="ios-step-num">2</div>
+        <div class="ios-step-text"><strong>"홈 화면에 추가"</strong> 또는 <strong>"앱 설치"</strong>를 탭하세요</div>
+      </div>
+      <div class="ios-step">
+        <div class="ios-step-num">3</div>
+        <div class="ios-step-text"><strong>"추가"</strong>를 탭하면 홈 화면에 아이콘이 생겨요!</div>
+      </div>
+    </div>
+    <button class="btn-ios-close" onclick="document.getElementById('android-modal').classList.remove('open')">확인했어요</button>
+  </div>
+</div>
+<div class="ios-modal-overlay" id="ios-modal" onclick="closeIosModal(event)">
+  <div class="ios-modal">
+    <div class="ios-modal-handle"></div>
+    <h3>📲 홈 화면에 추가하기</h3>
+    <p>아래 순서대로 따라하면 앱처럼 바로 실행할 수 있어요!</p>
+    <div class="ios-steps">
+      <div class="ios-step">
+        <div class="ios-step-num">1</div>
+        <div class="ios-step-text">하단 가운데 <strong>공유 버튼</strong>을 탭하세요 <span class="ios-step-icon">⬆️</span></div>
+      </div>
+      <div class="ios-step">
+        <div class="ios-step-num">2</div>
+        <div class="ios-step-text">스크롤을 내려 <strong>"홈 화면에 추가"</strong>를 탭하세요</div>
+      </div>
+      <div class="ios-step">
+        <div class="ios-step-num">3</div>
+        <div class="ios-step-text">우측 상단 <strong>"추가"</strong>를 탭하면 완료!</div>
+      </div>
+    </div>
+    <button class="btn-ios-close" onclick="document.getElementById('ios-modal').classList.remove('open')">확인했어요</button>
+  </div>
+</div>
+
+<!-- PAGE 2: LIST -->
+<div id="page-list" class="page">
+  <div class="list-header">
+    <div class="header-top">
+      <div>
+        <div class="header-greeting" id="list-greeting">안녕하세요,</div>
+        <div class="header-name" id="list-name">FP님</div>
+        <div class="header-org" id="list-org"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+        <button class="header-logout" onclick="doLogout()">로그아웃</button>
+        <button class="header-change-org" onclick="changeOrg()">소속 변경</button>
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>연습 진도</span>
+        <span id="progress-text">0 / 30</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+  </div>
+  <div class="list-body">
+    <button class="btn-fullplay" onclick="stopTTS(); initFullPlayPage(); showPage('fullplay')">🎧 화법 전체 듣기 (1→30번 자동재생)</button>
+    <div class="section-title">실전 후킹화법 30선</div>
+    <div class="speech-grid" id="speech-grid"></div>
+  </div>
+</div>
+
+<!-- PAGE 3: PRACTICE -->
+<div id="page-practice" class="page">
+  <div class="practice-header">
+    <button class="back-btn" onclick="goToList()">
+      <span class="back-arrow">←</span> 목록으로
+    </button>
+    <div class="practice-title" id="practice-id-label">화법 #1</div>
+    <div class="practice-name" id="practice-name-label">화법명</div>
+    <button class="btn-play-all" id="btn-play-all" onclick="togglePlayAll()">
+      🔊 전체 한번에 듣기
+    </button>
+  </div>
+  <div class="practice-body" id="practice-body"></div>
+  <div class="practice-footer">
+    <button class="btn-complete" id="btn-complete" onclick="toggleComplete()">✓ 연습 완료 표시</button>
+    <button class="btn-back-list" onclick="goToList()">← 화법 목록으로 돌아가기</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SPEECHES = [{"id":1,"name":"단골 옷가게 화법","buildup":"네, 주변에 아시는 설계사분들이 당연히 많으시겠죠. 말씀하신 아는 설계사분이 '돈 되는 좋은 정보'도 주고 '계약관리나 보상처리'도 잘해주고 계시죠?","hooking":"그런데 고객님, 정말 옷을 잘 입는 분들은 '단골 옷가게'만 가지 않는다고 합니다. 왜 그럴까요?(사이) 진짜 멋쟁이들이 나에게 맞는 핏이나 트렌드를 확인하러 다른 매장도 들르듯, 보험도 최신 보장 흐름이 맞는지 가끔 다른 설계사의 안목도 빌려보시는 것은 어떨까요?","benefit":"아는 옷가게가 많아야 나에게 맞는 최신 스타일을 찾을 수 있듯이 보장분석도 여러 회사와 비교해볼수록 고객님께 이득이 됩니다.","closing":"저는 이 일을 평생 직업으로 선택한 만큼, 고객님이 도움이 필요할 때 옆에서 책임지고 도와드리겠습니다. 저의 시작을 고객님과 함께 하고 싶습니다."},{"id":2,"name":"가입 vs 점검 화법","buildup":"나도 일 시작하면서 느낀 것 중 하나가 대부분 사람들이 보험을 가입만 하고 점검은 전혀 안 한다는 거야. 나도 그랬었거든. 많은 사람들이 보험 가입하면 끝이라고 생각하지만, 사실 진짜 시작은 그 다음부터잖아?","hooking":"결혼, 출산, 진학, 갑작스러운 사고, 질병, 간병대책, 국가의 의료재정문제, 노후문제 등… 너의 이런 중요한 인생변화에 맞춰 '적합한 돈 되는 정보'를 누가 관리해주면 좋을까?","benefit":"새로 가입해달라고 얘기하는 게 아니니까, 너의 보장이 '지금 상황과 미래상황'에 맞게 잘 되어있는지 점검만 해 줄려는 거야.","closing":"부담 갖지 말고 보험 점검만 한 번 받아보자. 업그레이드가 필요한지는 나중에 니가 결정하고…"},{"id":3,"name":"금고 vs 쓰레기통 화법","buildup":"맞습니다. 내 개인정보가 유출되지 않을까? 그래서 스팸전화/문자로 걱정하시는 분들이 많습니다. 저도 옛날에는 그랬어요.","hooking":"그런데 고객님, 개인정보를 금고에만 꼭꼭 두시다가 수천만 원짜리 내 보장과 보험료 할인혜택까지 쓰레기통에 버리고 계신 건 아닐까요?","benefit":"고객님의 개인 정보는 상담 외 목적으로 절대 사용하지 않습니다. 동의 없는 추가 사용은 불법이고요. 원하시면 언제든 정보 삭제 요청도 하실 수도 있습니다.","closing":"제공을 동의해주신 범위 내에서만 고객님의 보장 구조를 확인해드리겠습니다. (금융감독원 감독하 암호화 관리)"},{"id":4,"name":"5분 vs 수천만원 화법","buildup":"네, 바쁘신 거 충분히 이해합니다. 괜히 길어질까봐 부담되실 수 있습니다.","hooking":"그런데 고객님, 바쁘다고 미루신 그 5분이 나중에 수천만원의 손해로 돌아온다면 어떠실까요? 매달 통장에서 빠져나가는 보험료가 결정적인 순간에 고객님을 지켜준다고 장담할 수 있습니까?","benefit":"5분 점검으로 향후 보장과 보험료가 달라질 수 있습니다. 혹시 설명이 길어진다면 중간에 끊으셔도 됩니다.","closing":"5분 정도 시간 안에 핵심만 말씀드리겠습니다. 지금이 불편하시면 고객님 편한 시간에 맞추겠습니다."},{"id":5,"name":"10원 한푼 vs 평생 후회 화법","buildup":"내가 보험일 하다 보니까, 주변 설계사 지인 중에 막상 크게 아플 때 10원 한 푼 못 받고 후회하는 이야기를 많이 하더라. 그래서 너 같이 평생 볼 지인들 보험은 '꼭 한 번은 봐줘야겠다'는 생각을 많이 하게 되더라고.","hooking":"만약, 내 주변 지인들에게도 이런 황당한 상황이 생기면 설계사를 하고 있는 입장에서 내 기분은 어떨까? 정말 끔찍하고 후회스러울 거 같아.","benefit":"고객들 보장분석 해주다 보면 잘 몰라서 잘못 가입한 경우가 너무 많더라. 괜히 남한테 맡겨서 손해 보는 일은 있으면 안 되잖아?","closing":"내가 객관적으로 한번 봐 줄게. 이상 없으면 그대로 보험 유지하면 돼!"},{"id":6,"name":"10명 과제 화법","buildup":"나 이번에 보험회사 입사해서 지금 교육받고 있어. 아직 전문가라고 하긴 어렵지만 정말 열심히 하고 있거든.","hooking":"그래서 교육과제 중에 '보장분석 10명 하기'라는 과제가 있어. 고객 등록을 해주면 보장분석을 할 수 있는데, 가입하라는 게 아니니까, 내 교육 과제 도와줄거지?","benefit":"나도 공부할 겸 구조만 같이 확인해보자. 내 실력이 늘어나야 나중에 너도 진짜 믿고 맡길 수 있을 거잖아?","closing":"이상 없으면 나도 배우는 과정이니까 좋고, 혹시 이상 있으면 그때 같이 생각해보면 더 좋고. 그리고 많이 공부할 수 있도록 주위친구한테도 내 소개 많이 해주라!"},{"id":7,"name":"10년 된 옷 vs 맞춤복 화법","buildup":"네, 충분히 준비하셨다면 다행입니다. 잘하셨네요! 그만큼 미래를 꼼꼼하게 준비하셨다는 뜻이네요.","hooking":"그런데, 고객님. 10년 전에 산 옷 지금 입으면 어떠실 거 같으세요? 10년 전에는 몸에 딱 맞던 옷이 지금은 맞을까요? 그리고 무게감이나 스타일은 어떨까요? 생각만 해도 입기 싫으시죠? 그런데 이것조차도 입어 보기 전에는 알 수 없습니다.","benefit":"보험도 똑같습니다! 과거에는 완벽했던 보장이 지금의 새로운 의료 기술 앞에서는 휴지조각이 될 수도 있습니다. 특히, 실손 갱신 시점도 모르고 계시다가 갱신 폭탄을 그대로 맞으실 수도 있고요!","closing":"보험을 바꾸자는 게 아니라, 보장 내용을 확인하는 겁니다! 보험은 한 번 사고 끝이 아니라, 인생의 시기마다 '맞춰 입는 옷'과 같습니다.(맞춤복)"},{"id":8,"name":"호구 요금제 화법","buildup":"예전에는 질환이 있으면 보험가입이 제한되거나 높은 보험료를 내는 게 일반적이었습니다. 그래서 고혈압이나 당뇨 약 드신다는 이유로 남들보다 비싼 보험료 내며 가입하는 분들이 많았죠.","hooking":"혹시 고객님도 약 드신다고 남들보다 20~30% 비싼 '호구 요금제'를 내고 계시지는 않으십니까?","benefit":"과거에는 유병자였지만, 건강 관리를 잘해서 병원에 안 가시는 분들이 기존 유병자 상품을 그대로 유지하시면 훨씬 손해입니다.","closing":"불필요한 지출을 줄일 수 있는지 지금 바로 확인해 보셔야 합니다. 딱 5분만 투자해서 보장 점검 해보시죠!"},{"id":9,"name":"벤츠 vs 깡통차 화법","buildup":"너도 느끼겠지만 솔직히 보험은 잘못 들어 놓으면 손해보는 구조잖아. 이번 달에도 보험료 나갔을 텐데.. 진짜 이게 맞나 싶을 때 많잖아?","hooking":"그런데, 보험료 몇 십만원씩 매달 낼 때는 무감각하지만, 사실상 20년 모아보면 벤츠 한 대 값이거든. 혹시 니가 벤츠값을 내면서 '핵심 보장 다 빠진 깡통차' 보험을 유지하고 있는지 궁금하지 않아?","benefit":"보험은 납입기간 전체를 보면 내는 돈은 엄청 큰데, 매월 내다보니 잘 못~ 느끼거든. 계속 점검을 미루다 보면 손해가 가랑비에 옷 젖 듯이 계속 늘어나.","closing":"지금 가입한 보험들 겹치거나 중요한 보장이 빠진 건 없는지 더 꼼꼼하게 확인해보자!"},{"id":10,"name":"개복 vs 황제치료법 화법","buildup":"고객님, 암은 부자나 가난한 사람이나 누구에게나 오잖아요? 단지 치료하는 방법이 다를 뿐입니다.","hooking":"그런데 만약에 가족 중에 누군가 암이 걸렸다고 생각해보세요. 회복 기간도 길고 흉터가 남는 기존 개복수술법과, 회복 기간도 짧고 후유증도 덜 생기게 치료할 수 있는 새로운 황제치료법이 있다면 어떤 것을 선택하실 건가요?","benefit":"첫 번째는 실비로 해결할 수 있지만, 새로운 치료는 보험이 없다면 몇 천만원이 되는 치료비를 전부 감당하셔야 합니다.","closing":"보험이야말로 가난한 서민이 최고의 '황제치료'를 받을 수 있는 유일한 방법입니다."},{"id":11,"name":"손 선풍기 화법","buildup":"날씨가 많이 더워졌죠? 외국 사람들이 한국오면 가장 신기하게 생각하는게 뭔지 아세요? 바로 누구나 하나씩 들고 다니는 손 선풍기라고 합니다. 고객님도 손 선풍기 한 개씩은 가지고 다니시죠?","hooking":"근데 진짜 더운 날 손 선풍기를 키려는데 배터리가 없어서 안 켜지면 어떨까요? 아무리 비싼 선풍기도 배터리가 없으면 짐일 뿐입니다. 보험도 마찬가지입니다. 수 천만원짜리 보험 가입하셨는데 막상 암 걸리고 보장 안된다면, 억울하지 않으시겠어요?","benefit":"사용할 일 있을 때 점검하면, 그때는 늦습니다!","closing":"날씨가 더 더워지기 전에 배터리 확인하듯이 고객님 보험도 미리 점검하시죠! 5분이면 즉시 확인 가능합니다!"},{"id":12,"name":"숨은 보험금 찾기 화법","buildup":"고객님, 지난 번 통화 때 말씀드렸던 '숨은 보험금 찾기'에 대해 설명 드리려고 합니다.","hooking":"만약 고객님께서 교통 사고가 났는데, 보험금 청구를 누락했다면 보험사는 지급을 해줄까요? 안 해줄까요? 고객님이 청구 안하시면 보험사는 입 싹 닫고 절대 먼저 안 줍니다!","benefit":"눈 뜨고 코 베이지 않도록 숨은 보험금 한번 확인해 보셔야죠! 제가 고객님 보험 확인해드리고, 중복되거나 받지 못한 보험금에 대해 점검해드리려면 고객님의 동의가 필요합니다.","closing":"고객 등록은 1분이면 가능합니다!"},{"id":13,"name":"건강예보 vs 보험 우산 화법","buildup":"인생이란 항상 맑은 날만 있는 것은 아닙니다. 날씨는 예보가 있지만, 우리의 건강은 예보가 없습니다!","hooking":"비 오는 날 펼친 우산이 구멍이 나있다면 어떻게 하시겠습니까? 고객님의 '보험 우산'에 뻥 뚫린 구멍 때문에, 수백, 수천만 원 병원비 폭탄을 맨몸으로 다 맞으실 건가요?","benefit":"많은 분들이 보험을 가입하고 점검을 하지 않아 나중에 후회하는 상황이 많습니다.","closing":"제가 고객님의 '보험 우산'에 구멍이 없는지 확인만 도와드리겠습니다!"},{"id":14,"name":"소 잃고 외양간 화법","buildup":"제 친한 선배분이 플라스틱 제품 만드는 공장을 운영하시는데 2년전에 화재가 발생해 공장 일부가 전소됐습니다. 근데 돈 아깝다고 보험을 충분히 안들어서 큰 손실을 보셨거든요. 당시에는 사업확장 시기라 현금흐름이 좋지는 않았던거 같아요.","hooking":"그런데 고객님, 돈 몇 푼에 평생 일군 공장 다 날라가도 10원 한장 보장 못 받은 제 선배처럼, 고객님에게 '소 잃고 외양간 고치는 일'은 없어야 되지 않을까요?","benefit":"보험은 '위험 확률이 낮을 때 미리 사두는 안전 장치'에요! 큰 병 선고받고 보험금 없어서 치료조차 포기하는 비극이 결코 남의 일이 아닙니다.","closing":"근데, 그 선배님은 어떻게 되셨을까요? 지금은 재기하셔서 지금은 제가 하라는 대로 아주 말 잘 듣는 우수고객님이 되셨습니다."},{"id":15,"name":"두번 세번 화법","buildup":"고객님, 예전 암 진단비는 한 번 진단받으면 보험금을 딱 1번 지급하고 보장이 없어지는데, 요즘은 다릅니다!","hooking":"최근에 출시되는 암보험은 진단, 수술, 방사선, 항암 등 암관련 치료를 받을 때마다 보험금이 두번 세번, 반복적으로 보장이 되는데, 혹시 고객님은 아직도 옛날 진단비만 가지고 계시진 않나요?","benefit":"이제 암은 '죽는 병'에서 '관리하며 치료하는 병'으로 바뀌었습니다. 고객님의 보험도 시대에 맞춰서 업데이트가 필요합니다. 암 특정치료비 보장을 통해, 여러 번의 치료도 부담 없이 받을 수 있어요.","closing":"고객 등록만 해주시면, 고객님의 보험 한번에 업데이트 도와드리겠습니다."},{"id":16,"name":"건강 검진 화법","buildup":"고객님 마지막 건강검진은 언제 받으셨나요? 보통 생년월일에 맞춰서 정기검진 하거나, 직장에서 1년에 한번씩 기본 검사하는 분들이 많으시더라구요.","hooking":"건강 검진 그냥 무작정 받으러 가시면, 검진할 때 뗀 용종 수술비 같은 거 전부 허공에 날리게 되는 거 알고 계신가요?","benefit":"건강 검진 예약하기 전에 먼저 보험 점검을 꼭 받으세요! 용종 제거는 보험사에서 수술로 인정하기 때문에 보장 받을 수 있어요. 최근에 저도 용종 떼고 90만원 보너스 받았습니다.","closing":"앞으로 건강 검진은 돈 쓰는 날이 아니라, 숨어있던 보험금을 찾는 날이라고 생각하세요!"},{"id":17,"name":"사망 vs 간병 선택 화법","buildup":"좋은 사람은 나한테 잘하는 사람이죠, 좋은 보험은 내가 아플 때 보상을 받을 수 있어야 좋은 보험입니다. 혹시, 고객님, 보험 리모델링이라고 들어 보셨나요? 네, 부담스러운 질문 하나 드리겠습니다.","hooking":"고객님께서는 내가 죽은 다음의 내 가족들이 더 걱정되십니까? 아니면 내가 사는 동안 간병상태로 내 가족을 힘들게 하는 게 더 걱정되십니까?","benefit":"보험은 '죽음' 대비보다 '삶을 지키는 순서'가 훨씬 중요합니다. 사망보장에 보험료가 집중돼서 정작 지금 내가 살아있을 때 필요한 암/뇌/심과 간병을 준비하기 어렵습니다. 자녀들이 다 커서 가장으로서의 경제적 책임이 줄어들고 있는 지금이 리모델링의 최적의 시기입니다.","closing":"한화손보의 최고의 보장분석 시스템을 통해 보험 리모델링 하세요!"},{"id":18,"name":"상령일 화법","buildup":"고객님, 생일이 언제이신가요? 혹시 상령일은 들어보셨나요? 본인 생일에 +,- 6개월 이내는 보험가입나이가 동일하지만, 상령일 이후에는 1살이 추가되어 보험료가 인상됩니다.","hooking":"다음주부터 이마트에서 생필품 가격이 10% 올라간다면 고객님은 이번주에 이마트를 반드시 가시겠죠? 가만히 숨만 쉬고 있어도 다음 달부터 보험료가 올라가는데 평생 더 비싼 보험료를 내야 한다면 어떻게 하실 건가요?","benefit":"택시도 야간에 타면 요금이 올라가듯이, 상령일 이후에 계약을 하면 보험료가 인상되기 때문에 앞으로 보험가입 하실거라면, 최대한 빨리 가입 하시는게 가장 현명한 방법입니다.","closing":"저희 한화손보에서 상령일 도래하시는 분들에게 '무료로 보험 컨설팅'을 제공해드리고 있습니다. 1분만 고객 등록해주시면 보장 분석을 바로 진행해드리겠습니다!"},{"id":19,"name":"무사고 할인 화법","buildup":"요즘 어딜 가나 경기가 어렵다는 말씀을 많이 하시는데, 고객님은 '우리집 지출 점검'은 주기적으로 하고 계신가요?","hooking":"지출 중에서 약 15%를 차지하는 것이 보험인데, 혹시 고객님은 유병자보험을 가입하고 계시진 않으세요? 만약, 최근에 병원도 안가고 건강 관리 잘하셨는데.. 아픈 분들과 똑같은 보험료를 내고 계신다면 지출을 줄일 수 있는 절호의 기회입니다. 궁금하지 않으세요?","benefit":"과거 5년 동안 입원이나 수술이 없다면 새로 보험을 갈아타셔서 더 저렴한 금액에 더 넓은 보장을 받으실 수 있습니다.","closing":"저희 한화손보에선 건강 관리를 잘하신 분들을 위해 다양한 제도가 잘 마련되어 있습니다. 10분만 시간을 주시면 제가 핵심 정보만 제공해드리겠습니다."},{"id":20,"name":"실손 강제전환 화법","buildup":"고객님, 우리 국민 대부분이 가입하고 있는 보험이 뭔지 아세요? 실손입니다. 그런데, 실손은 가입시기에 따라 구조가 달라서 반드시 전문가의 도움이 필요합니다.","hooking":"뉴스에서 5세대 실손 나온다는 이야기 들으셨죠? 지금 난리입니다. 5세대로 강제 전환되면 보장 줄어들거라는 걱정이 많습니다. 혹시, 고객님의 실손은 강제 전환이 되는 실손입니까?","benefit":"어려우시죠? 2013년 4월 이후 2세대 실손부터 5년 또는 15년마다 재가입이 진행되는데, 무조건 보장이 약한 5세대로 전환을 해야 해요. 실손으로 보장받지 못하는 공백은 지금부터 확인하셔야 합니다.","closing":"5분만 시간을 주시면 고객등록 후에 제가 빠르게 확인해드리겠습니다."},{"id":21,"name":"만에 하나 vs 둘에 하나 화법","buildup":"언니 말도 틀린 말은 아니야. 누구나 암에 걸리고 사고를 당하는 건 아니니까.","hooking":"근데 만에 하나 그 누구나가 언니나 언니 가족이라면? 그리고, 만에 하나가 아니라 우리 둘 중에 하나라면 어떨까? 암 한 번 걸리면 수천만원 우습게 깨지는데, 10만원씩 통장에 모아서 그 병원비 감당할 수 있겠어?","benefit":"가족, 친지조차도 병문안 와서 '30만원 봉투'에 넣어주고 가는게 전부이지 않나? 언니 몸은 언니가 책임져야돼. 적금 깬 돈으로 병원비 내는 순간, 그 동안 모은 재산 한방에 없어지는거 순식간이야.","closing":"언니가 지금은 나를 도와줄려고 보험에 가입해주겠지만, 나중에 이 보험이 언니에게 가족보다 더 위로가 될거야."},{"id":22,"name":"민감정보보안 화법","buildup":"가족 중에 설계사분 계시다니 정말 다행이네요.","hooking":"근데 병원도 자주 가던 병원에서 이상 소견 진단 받으시면, 궁금해서라도 다른 병원에 가서 확인해 보시지 않으실까요? 그리고, 보험이라는 것이 예민한 문제들이 있습니다. 가족관계일수록 숨길 수 있는 부분들도 많은데 다 오픈하실 수 있습니까?","benefit":"저는, 고객님의 건강상 정보, 보험금에 대한 정보, 모든 정보를 전문가로써 소중하게 관리해드릴 수 있습니다. 오늘은 고객님 보험이 제대로 가입되어 있는지만 확인 도와드리겠습니다.","closing":"가입은 가족 분한테 하셔도 됩니다! 급할 때 도움 받을 수 있는 설계사가 한 명 더 있다 정도 기억해주세요."},{"id":23,"name":"부자 vs 빈자 비교화법","buildup":"고객님 혹시 '보험에 대한 안 좋은 기억'이 있으신가요? 보통 보험이 안 좋은 경우는 '보장이 이루어지기 전에 해약을 할 때' 거든요.","hooking":"고객님, 혹시 우리나라 상위 1%의 순자산이 얼마인지 아세요? 약 33억 정도라고 하네요. 그 정도 돈이 있으면 보험이 필요 없을 거 같은데? 어떻게 생각하세요?","benefit":"그런데 사실상 상위 1%의 분들이 더 많이 준비를 합니다. 상속세 재원 마련, 황제치료, 황제간병 등을 위해 더 많은 보험료를 지불하고 있습니다. 부자는 부를 물려주기 위해서, 가난한 사람은 가난을 물려주지 않기 위해서 가입하는 것이 보험입니다.","closing":"엄청 비싼 안전장치를 사라는 게 아니라, 최소한의 안전장치라도 준비하실 수 있게 제가 도와드리겠습니다!"},{"id":24,"name":"보상멘탈할증 vs 신뢰의 무게 화법","buildup":"말씀하신대로 요즘은 보험료 10% 싼 인터넷으로 가입하시는 분들이 많습니다.","hooking":"그런데 '가입할인'이 중요한 것이 아니라 '보상맨탈할증'이 발생하는 경우가 많은데, 이 부분을 간과해서는 안됩니다. 자동차보험은 보상을 잘 받기 위해서 가입하는 것인데, 보상을 잘 받으려면 보상센터와 싸움도 흥정도 잘해야 됩니다. 10% 보험료 아끼려다 고객님의 소중한 시간과 어려운 보상서류에 난감해 하는 심리적 불편함을 고스란히 떠안으실 겁니까?","benefit":"저를 통해서 가입해주시면 '사고 났을 때'는 물론이고, '사고가 나지 않은 시간'에도 고객님 가까운 곁에 있겠습니다. 그리고 10만원이 20년간의 신뢰의 무게보다 무겁진 않으시죠? 자동차사고는 고객님의 개인보험과도 연결이 되어 있어서 동시에 관리 받으시는 것이 매우 유리합니다.","closing":"옛말에 '흥정을 붙이고 싸움은 말리라'는 말이 있습니다. 보험사와의 흥정도 고객과의 싸움도 제가 도와드리겠습니다."},{"id":25,"name":"2대질환 화법","buildup":"최근 주변 지인분들이 '초기 뇌경색'으로 입원하셔서 스탠스 삽입수술하시는 분들이 많아지고 있어요. 암도 그렇듯이 뇌, 심장질환도 '초기단계부터 관리하는 시대'가 된 거 같아요.","hooking":"고객님 같으면 '초기증상 시점부터 보장되는 넓은 범위의 보험'이 좋으세요? 아님 옛날 같이 참다~참다~ 터진 다음 보장되는 '좁은 범위의 보험'이 좋으세요? 실제 많은 고객님들은 뇌나 심혈관질환의 경우 '범위의 함정, 순서의 함정' 때문에 뒤늦게 후회하시는 분들이 많습니다.","benefit":"일반적으로 과거의 뇌, 심보험은 보상범위에서 '10% 정도만 보상'되는 보장을 가지고 있어 '90%의 부담'을 고객님이 져야했습니다. '발생할 확률이 높은 쪽, 그리고 초기단계'부터 당연히 대비하셔야 합니다.","closing":"고객님 핸드폰 인증해 주시면 바로 점검해드릴 수 있는데 5분 정도 시간 괜찮으시죠?"},{"id":26,"name":"해약 방어 우량주 화법","buildup":"최근에 어려운 상황이 있으신 거 같아 마음이 무겁습니다. 고객님, 요즘 주식하시는 분들이 많으시던데, 혹시 고객님도 하신 경험 있으신가요?","hooking":"이 보험은 가입 당시 '낮은 보험료와 유리한 보장조건'으로 가입하셔서 주식으로 보면 '우량주'와 같습니다. 유지가 어렵다고 지금 파시면 나중에 더 비싼 가격을 주고도 같은 조건으로 다시 사기 어려우실 텐데, 그 손해와 억울함을 감당하실 수 있으시겠어요?","benefit":"기다리다 보면 '상한가'가 한번은 나오듯, 보험에서도 '보험의 상한가'는 보상이 이루어질 때 입니다. 그때까지는 어려우시더라도 기다리시는 것이 현명하지 않을까요?","closing":"혹시 보험료가 부담되신다면 '보험료컨설팅'이라도 받아 보시는 건 어떨까요? 핵심보장 위주로 잘 살펴봐드리겠습니다."},{"id":27,"name":"여성보험 가족간병 80% 화법","buildup":"역쉬~ 가족밖에 모르는 착한 고객님ㅎㅎ, 근데 최근 통계청자료를 보면 '가족간병인 중 약 80%'를 차지하는 사람이 누군지 아세요? '여성'이라고 합니다.","hooking":"가족이 아프면 내가 간호하면 되지만, 정작 고객님이 아프시거나 입원하시면 남편분(가족)이 회사를 그만두고 간병하거나, 뉴스에도 나오듯이 한 달 평균 350만원 이상 비싼 간병인을 써야 하는데, 맘 편히 치료에 집중할 수 있을까요?","benefit":"엄마가 아프면 가장 먼저 무너지는 건 '가족의 일상'이라고 합니다. 엄마의 빈자리는 사랑만으로 채워질 수 없으니까요. 지금은 '엄마의 치료'는 치료대로, '엄마의 빈자리'는 빈자리대로 보험으로 준비할 수 있는 시대입니다.","closing":"나중에 진짜 아플 때 '아 이건 준비하길 잘했다'는 소리가 나오게끔, 실속 있게 제가 한 번 점검해드리겠습니다."},{"id":28,"name":"간병살인 화법","buildup":"요즘 간병인 사용 금액이 하루에 얼마인지 아시나요? 간병인은 쓰면 하루 평균 12만원~15만원까지 나온다고 합니다. 월평균으로 보면 약 350만원 이상이 든다고 하네요. 고객님 자녀가 몇 명이신가요?","hooking":"간병인 안 쓰고 자식이나 남편(배우자)이 직접 간병할 수 있을까요? 하루 이틀이면 가능하겠지만 언제일지 모르는 긴 시간을 간병해야 한다면 그 엄청난 부담이 혹시 모를 '불화의 시작'이 되진 않을까요?","benefit":"'간병보험'이 비싼 것이 아니라 '간병인비용'이 비싸서 그런 겁니다. 그래서 끔찍하지만 '간병살인'도 일어나고요. '긴 병에 효자 없다'는 말도 다시 회자되는 거고요. 그런 일은 있으면 안 되잖아요?","closing":"비싼 만큼 '가족간의 추억과 사랑'을 마지막까지 지켜주는 '기회비용'이라고 생각하시면 그렇게 비싼 보험료를 지불하시는 건 아닐 겁니다."},{"id":29,"name":"저축대응 화법","buildup":"고객님 말씀대로","hooking":"보험은 '당장의 효용'이 보이지 않기 때문에 예/적금보다 손해라고 느끼실 수도 있습니다. 그래서 저축은 '시간'이 벌어다 주는 돈이라고 하고","benefit":"보험은 '사건'이 벌어다 주는 돈이라고 하잖아요.","closing":"1억 저축이 완성되기 전에 '현금흐름의 중단'을 막는 것이 보험입니다. 한번 가정해볼게요. 만약 고객님께서 1억원을 모으려면 매달 100만원씩 8년 넘게 숨만 쉬고 모아야 합니다. 하지만 암이나 큰 사고는 그 8년이라는 '시간'을 기다려주지 않습니다. 그렇다면 갑자기 찾아온 '큰 사건'이 고객님의 1억원을 지켜줄 수 있을까요?"},{"id":30,"name":"무병장수 vs 유병장수 화법","buildup":"이렇게 말씀하시는 분들이 주말에 산에 다니고 헬스하면서 건강관리 잘 하십니다. 그런데 고객님","hooking":"요즘 100세 시대라고 하는데 '무병 장수'가 많을까요? '유병장수'가 많을까요?","benefit":"노년의 20~30년은 크고 작은 질병과 함께 살아갑니다. 오래 사는 만큼 의료비 지출기간도 길어지기 때문에 든든한 대책이 필요합니다. 노후의 품격은 '돈'에서 나온다고 하잖아요? 그리고 고객님 이미 우리나라는 '최빈사망연령이 90세'가 넘었습니다. 100세는 '선택'이 아니라 '통계의 결과'입니다.","closing":"'무병장수는 하늘이 내려주는 축복이고 유병장수는 의학이 내려주는 재앙'이라는 말이 있습니다. 가족입장에서 살리고 싶은데 돈이 없는 슬픔보다 죽고 싶은데 안 죽고 오래 사는 상황이 더 절망적이지 않을까요?"}];
+
+let currentUser = null;
+let currentSpeech = null;
+let ttsActive = false;
+let ttsUtterance = null;
+
+/* ══════════════════════════════════════════════
+   로컬 스토리지 데이터 관리
+══════════════════════════════════════════════ */
+function getStorageKey(empId) { return `hanwha_fp_${empId}`; }
+
+function getProgress(empId) {
+  try {
+    const raw = localStorage.getItem(getStorageKey(empId));
+    return raw ? JSON.parse(raw) : { name: '', done: [], hq:'', region:'', branch:'' };
+  } catch { return { name: '', done: [], hq:'', region:'', branch:'' }; }
+}
+
+function saveProgress(empId, data) {
+  try { localStorage.setItem(getStorageKey(empId), JSON.stringify(data)); } catch {}
+}
+
+function getProgressLocal(empId) { return getProgress(empId); }
+
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function doLogin() {
+  const name = document.getElementById('input-name').value.trim();
+  const empId = document.getElementById('input-id').value.trim();
+  if (!name) { showToast('성명을 입력해 주세요'); return; }
+  if (!empId) { showToast('사번을 입력해 주세요'); return; }
+
+  if (name === '관리자' && empId === '1234567') {
+    currentUser = { name, empId, hq:'', region:'', branch:'' };
+    showAdminPage();
+    return;
+  }
+
+  currentUser = { name, empId, hq:'', region:'', branch:'' };
+  const prog = getProgress(empId);
+  prog.name = name;
+  if (prog.hq) {
+    // 이전에 소속을 선택한 적 있음 → 바로 목록으로
+    currentUser.hq = prog.hq;
+    currentUser.region = prog.region;
+    currentUser.branch = prog.branch;
+    saveProgress(empId, prog);
+    renderList();
+    showPage('list');
+  } else {
+    // 처음 로그인 → 소속 선택 페이지로
+    saveProgress(empId, prog);
+    showOrgPage();
+  }
+}
+
+function doLogout() {
+  stopTTS(); stopFullPlay();
+  currentUser = null; orgStep = 'hq'; orgSelected = {};
+  document.getElementById('input-name').value = '';
+  document.getElementById('input-id').value = '';
+  showPage('login');
+}
+
+function renderList() {
+  const prog = getProgress(currentUser.empId);
+  const done = new Set(prog.done || []);
+  document.getElementById('list-greeting').textContent = `안녕하세요, ${currentUser.empId}님!`;
+  document.getElementById('list-name').textContent = `${currentUser.name} FP`;
+
+  // 소속 표시
+  const orgEl = document.getElementById('list-org');
+  const orgParts = [currentUser.hq, currentUser.region, currentUser.branch].filter(Boolean);
+  orgEl.textContent = orgParts.length ? orgParts.join(' › ') : '소속 미선택';
+
+  const cnt = done.size;
+  document.getElementById('progress-text').textContent = `${cnt} / 30`;
+  document.getElementById('progress-fill').style.width = `${Math.round(cnt / 30 * 100)}%`;
+  const grid = document.getElementById('speech-grid');
+  grid.innerHTML = '';
+  SPEECHES.forEach(s => {
+    const isDone = done.has(s.id);
+    const card = document.createElement('div');
+    card.className = 'speech-card' + (isDone ? ' done' : '');
+    card.onclick = () => openPractice(s.id);
+    card.innerHTML = `
+      <div class="card-num">${s.id}</div>
+      <div class="card-info">
+        <div class="card-name">${s.name}</div>
+        <div class="card-sub">${isDone ? '연습 완료' : '미연습'}</div>
+      </div>
+      <div class="card-badge ${isDone ? 'done-badge' : 'todo-badge'}">${isDone ? '✓ 완료' : '미완'}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function changeOrg() {
+  // 소속 선택 페이지로 이동 (선택 완료 후 목록으로 돌아옴)
+  orgStep = 'hq'; orgSelected = {};
+  // 기존 선택값 초기화
+  currentUser.hq = ''; currentUser.region = ''; currentUser.branch = '';
+  renderOrgGrid();
+  showPage('org');
+}
+
+function openPractice(id) {
+  stopTTS();
+  const s = SPEECHES.find(x => x.id === id);
+  currentSpeech = s;
+  document.getElementById('practice-id-label').textContent = `화법 #${s.id}`;
+  document.getElementById('practice-name-label').textContent = s.name;
+  const prog = getProgress(currentUser.empId);
+  const isDone = (prog.done || []).includes(s.id);
+  updateCompleteBtn(isDone);
+  const body = document.getElementById('practice-body');
+  const steps = [
+    { key: 'buildup', label: 'Buildup', cls: 'step-buildup', text: s.buildup },
+    { key: 'hooking', label: 'Hooking', cls: 'step-hooking', text: s.hooking },
+    { key: 'benefit', label: 'Benefit', cls: 'step-benefit', text: s.benefit },
+    { key: 'closing', label: 'Closing', cls: 'step-closing', text: s.closing },
+  ];
+  body.innerHTML = '';
+  steps.forEach((step, i) => {
+    const korLabel = step.label === 'Buildup' ? '빌드업' : step.label === 'Hooking' ? '후킹' : step.label === 'Benefit' ? '베네핏' : '클로징';
+    const card = document.createElement('div');
+    card.className = 'step-card' + (i === 0 ? ' open' : '');
+    card.dataset.stepKey = step.key;
+    card.innerHTML = `
+      <div class="step-header" onclick="toggleStep(this)">
+        <div class="step-pill ${step.cls}">
+          <div class="step-dot"></div>
+          ${step.label}
+        </div>
+        <div class="step-label">${korLabel}</div>
+        <span class="step-chevron">⌃</span>
+      </div>
+      <div class="step-content">
+        <div class="step-text">${step.text}</div>
+        <button class="step-tts-btn" onclick="event.stopPropagation(); speakStep('${step.key}', this)" data-step="${step.key}">
+          <span class="step-tts-icon">🔊</span> 목소리 듣기
+        </button>
+      </div>
+    `;
+    body.appendChild(card);
+  });
+  showPage('practice');
+}
+
+function toggleStep(header) {
+  const card = header.parentElement;
+  card.classList.toggle('open');
+}
+
+function updateCompleteBtn(isDone) {
+  const btn = document.getElementById('btn-complete');
+  if (isDone) {
+    btn.textContent = '✓ 연습 완료됨 (취소하기)';
+    btn.classList.add('completed');
+  } else {
+    btn.textContent = '✓ 연습 완료 표시';
+    btn.classList.remove('completed');
+  }
+}
+
+function toggleComplete() {
+  if (!currentSpeech) return;
+  const prog = getProgress(currentUser.empId);
+  const done = new Set(prog.done || []);
+  if (done.has(currentSpeech.id)) {
+    done.delete(currentSpeech.id);
+    showToast('연습 완료가 취소되었습니다');
+  } else {
+    done.add(currentSpeech.id);
+    showToast('연습 완료가 기록되었습니다! 🎉');
+  }
+  prog.done = [...done];
+  saveProgress(currentUser.empId, prog);
+  updateCompleteBtn(done.has(currentSpeech.id));
+}
+
+function goToList() {
+  stopTTS();
+  renderList();
+  showPage('list');
+}
+
+function buildTTSText(s) {
+  return `${s.name}. 빌드업: ${s.buildup}. 후킹: ${s.hooking}. 베네핏: ${s.benefit}. 클로징: ${s.closing}`;
+}
+
+let activeTtsBtn = null;
+
+function speakStep(stepKey, btn) {
+  if (!('speechSynthesis' in window)) { showToast('이 브라우저는 음성 기능을 지원하지 않습니다'); return; }
+  if (activeTtsBtn && activeTtsBtn === btn) { stopTTS(); return; }
+  stopTTS();
+  const text = currentSpeech[stepKey];
+  if (!text) return;
+  ttsUtterance = new SpeechSynthesisUtterance(text);
+  ttsUtterance.lang = 'ko-KR';
+  ttsUtterance.rate = 0.88;
+  activeTtsBtn = btn;
+  btn.classList.add('playing');
+  btn.innerHTML = '<span class="step-tts-icon">⏹</span> 정지하기';
+  ttsActive = true;
+  ttsUtterance.onend = () => { resetTtsBtn(btn); };
+  ttsUtterance.onerror = () => { resetTtsBtn(btn); };
+  speechSynthesis.speak(ttsUtterance);
+}
+
+function resetTtsBtn(btn) {
+  if (!btn) return;
+  btn.classList.remove('playing');
+  btn.innerHTML = '<span class="step-tts-icon">🔊</span> 목소리 듣기';
+  ttsActive = false;
+  ttsUtterance = null;
+  activeTtsBtn = null;
+}
+
+/* stopTTS는 하단에 통합 정의됨 */
+
+/* ── PWA INSTALL ── */
+let deferredPrompt = null;
+
+// beforeinstallprompt는 페이지 로드 초기에 딱 한 번 발생하므로
+// 스크립트 최상단에서 즉시 캡처해야 함
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+});
+
+window.addEventListener('appinstalled', () => {
+  const btn = document.getElementById('btn-install');
+  if (btn) btn.classList.remove('visible');
+  showToast('홈 화면에 추가되었습니다! 🎉');
+  deferredPrompt = null;
+});
+
+function isIOS() {
+  return /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+}
+function isInStandaloneMode() {
+  return ('standalone' in window.navigator && window.navigator.standalone) ||
+         window.matchMedia('(display-mode: standalone)').matches;
+}
+
+// 로딩 끝난 후 호출됨
+function initInstallButton() {
+  if (isInStandaloneMode()) return; // 이미 앱으로 실행 중이면 불필요
+  const btn = document.getElementById('btn-install');
+  if (!btn) return;
+  btn.classList.add('visible'); // 항상 표시 — Android/iOS 모두
+}
+
+function handleInstall() {
+  if (isIOS()) {
+    document.getElementById('ios-modal').classList.add('open');
+  } else {
+    document.getElementById('android-modal').classList.add('open');
+  }
+}
+
+function closeIosModal(e) {
+  if (e.target === document.getElementById('ios-modal')) {
+    document.getElementById('ios-modal').classList.remove('open');
+  }
+}
+function closeAndroidModal(e) {
+  if (e.target === document.getElementById('android-modal')) {
+    document.getElementById('android-modal').classList.remove('open');
+  }
+}
+/* ── END PWA ── */
+
+/* ── ACCESS KEY + 로딩 통합 ── */
+const ACCESS_KEY = '1234';
+
+function submitAccessKey() {
+  const val = document.getElementById('access-input').value.trim();
+  const errEl = document.getElementById('access-error');
+  const inputEl = document.getElementById('access-input');
+  if (val === ACCESS_KEY) {
+    sessionStorage.setItem('hw_access_ok', '1');
+    errEl.textContent = '';
+    hideLoading();
+  } else {
+    inputEl.classList.add('error');
+    errEl.textContent = '접속 코드가 올바르지 않습니다';
+    inputEl.value = '';
+    setTimeout(() => inputEl.classList.remove('error'), 1200);
+  }
+}
+
+function showAccessBox() {
+  document.getElementById('loading-spinner-wrap').style.display = 'none';
+  document.getElementById('access-box').classList.add('visible');
+  setTimeout(() => document.getElementById('access-input').focus(), 100);
+}
+
+function hideLoading() {
+  const el = document.getElementById('loading-screen');
+  if (!el) return;
+  el.classList.add('hidden');
+  setTimeout(() => {
+    el.remove();
+    initInstallButton(); // 로딩 끝난 후 버튼 표시 여부 결정
+  }, 400);
+}
+
+// 로딩 완료 후 → 이미 인증됐으면 바로 숨김, 아니면 코드 입력창 표시
+function onPageReady() {
+  if (sessionStorage.getItem('hw_access_ok') === '1') {
+    hideLoading();
+  } else {
+    // 스피너를 최소 0.6초는 보여준 뒤 입력창으로 전환
+    setTimeout(showAccessBox, 600);
+  }
+}
+
+if (document.readyState === 'complete') {
+  onPageReady();
+} else {
+  window.addEventListener('load', onPageReady);
+}
+/* ── END ACCESS KEY + 로딩 ── */
+
+/* ══════════════════════════════════════════════
+   ORG SELECTOR
+══════════════════════════════════════════════ */
+const ORG = {"서울지역본부":{"서울지역단":["정동지점","로얄지점","불광지점","중앙지점","일산지점","파주지점","김포SFP지점"],"강북지역단":["종로지점","수도지점","강북지점","노원지점","의정부지점","경의지점"],"강동지역단":["잠실지점","강동지점","송파지점","광진지점","이천지점","양평지점"],"강서지역단":["구로지점","신도림지점","목동지점","여의도지점","서울SLC지점"],"강남지역단":["강남지점","도곡지점","사당지점","성남지점","분당지점"]},"경인지역본부":{"인천지역단":["송도지점","주안지점","신주안지점","퍼스트SFP지점","인천지점"],"부평지역단":["부평지점","신부평지점","부평중앙지점","계양지점"],"부천지역단":["송내지점","중동지점","원미지점","신중동지점","시흥지점"],"안양지역단":["안양지점","평촌지점","범계지점","안산지점","단원지점","광명지점","광명중앙지점"],"수원지역단":["수원지점","인계지점","효원지점","송탄지점","동탄지점","오산지점","광교지점"],"강원지역단":["강릉지점","태백지점","속초지점","삼척지점","원주SFP지점","서원주SFP지점","춘천지점"]},"중부지역본부":{"제주지역단":["제주지점","한라지점","탐라지점","서귀포지점"],"대전지역단":["대전지점","도안지점","대덕지점","둔산지점","탄방지점","탄방SFP지점","논산지점"],"충남지역단":["천안지점","동천안지점","서천안지점","아산지점","서산지점","공주지점","세종지점","천안SFP지점","충남SFP지점"],"충북지역단":["청주지점","새청주지점","직지지점","제천지점","충주지점","충북SFP지점","오창SFP(배양)지점"],"광주지역단":["광주미래지점","광주지점","목포지점","해남(배양)지점","신흥지점","호남지점","신광주지점","광주SFP지점"],"전북지역단":["전주지점","익산지점","군산지점","정읍지점","전주SFP지점"],"전남지역단":["여수지점","여천지점","순천지점","동순천지점","광양지점","강진지점"]},"영남지역본부":{"중부산지역단":["중부산지점","연제지점","광복지점","김해지점","양산(배양)지점"],"부산지역단":["전진지점","부산지점","부산ACE지점","동부산지점","부산혁신지점","부산SFP지점"],"창원지역단":["창원지점","동창원지점","팔용지점","마산지점","마산중앙지점","동마산지점","신마산지점"],"경남지역단":["진주지점","남강지점","하동지점","경남지점","거제지점","옥포지점","리더스SFP지점"],"대구지역단":["신화지점","대구지점","영주지점","상주지점","김천지점","대구SFP지점"],"동대구지역단":["황금지점","신성지점","동대구SFP지점","구미SFP지점","경산지점","현풍SFP지점"],"포항지역단":["포항지점","신포항지점","경주지점","영천지점","포항SFP지점"],"울산지역단":["달동지점","무룡지점","울산지점","신정지점"]},"SFP영업본부":{"수도SFP1사업단":["광화문SFP지점","서울SFP지점","한양SFP지점","구리SFP지점","고양SFP지점","정발산SFP지점","LadyPlus지점"],"수도SFP2사업단":["인천SFP지점","안산SFP지점","화성SFP지점","서동탄SFP지점","용인SFP지점","은계SFP지점"]}};
+
+let orgStep = 'hq'; // hq → region → branch
+let orgSelected = {};
+
+function showOrgPage() {
+  orgStep = 'hq'; orgSelected = {};
+  renderOrgGrid();
+  showPage('org');
+}
+
+function renderOrgGrid() {
+  const grid = document.getElementById('org-grid');
+  const bc = document.getElementById('org-breadcrumb');
+  const secLabel = document.getElementById('org-section-label');
+  const headerTitle = document.getElementById('org-header-title');
+  const headerSub = document.getElementById('org-header-sub');
+  grid.innerHTML = ''; bc.innerHTML = '';
+
+  if (orgStep === 'hq') {
+    headerTitle.textContent = '소속 선택'; headerSub.textContent = '본부를 선택해 주세요';
+    secLabel.textContent = '본부';
+    Object.keys(ORG).forEach(hq => {
+      const btn = document.createElement('button');
+      btn.className = 'org-btn';
+      btn.innerHTML = `<span>${hq}</span><span class="org-arrow">›</span>`;
+      btn.onclick = () => { orgSelected.hq = hq; orgStep = 'region'; renderOrgGrid(); };
+      grid.appendChild(btn);
+    });
+  } else if (orgStep === 'region') {
+    headerSub.textContent = '지역단을 선택해 주세요';
+    secLabel.textContent = '지역단';
+    bc.innerHTML = `<strong>${orgSelected.hq}</strong> <span>›</span>`;
+    Object.keys(ORG[orgSelected.hq]).forEach(region => {
+      const btn = document.createElement('button');
+      btn.className = 'org-btn';
+      btn.innerHTML = `<span>${region}</span><span class="org-arrow">›</span>`;
+      btn.onclick = () => { orgSelected.region = region; orgStep = 'branch'; renderOrgGrid(); };
+      grid.appendChild(btn);
+    });
+    const backBtn = document.createElement('button');
+    backBtn.className = 'org-btn'; backBtn.style.color='var(--text3)';
+    backBtn.innerHTML = `<span>← 본부 다시 선택</span>`;
+    backBtn.onclick = () => { orgStep='hq'; orgSelected={}; renderOrgGrid(); };
+    grid.appendChild(backBtn);
+  } else if (orgStep === 'branch') {
+    headerSub.textContent = '지점을 선택해 주세요';
+    secLabel.textContent = '지점';
+    bc.innerHTML = `<strong>${orgSelected.hq}</strong> <span>›</span> <strong>${orgSelected.region}</strong> <span>›</span>`;
+    ORG[orgSelected.hq][orgSelected.region].forEach(branch => {
+      const btn = document.createElement('button');
+      btn.className = 'org-btn';
+      btn.innerHTML = `<span>${branch}</span><span style="font-size:13px;color:var(--primary)">선택</span>`;
+      btn.onclick = () => {
+        orgSelected.branch = branch;
+        currentUser.hq = orgSelected.hq;
+        currentUser.region = orgSelected.region;
+        currentUser.branch = orgSelected.branch;
+        const prog = getProgress(currentUser.empId);
+        prog.hq = orgSelected.hq; prog.region = orgSelected.region; prog.branch = orgSelected.branch;
+        saveProgress(currentUser.empId, prog);
+        renderList(); showPage('list');
+      };
+      grid.appendChild(btn);
+    });
+    const backBtn = document.createElement('button');
+    backBtn.className = 'org-btn'; backBtn.style.color='var(--text3)';
+    backBtn.innerHTML = `<span>← 지역단 다시 선택</span>`;
+    backBtn.onclick = () => { orgStep='region'; renderOrgGrid(); };
+    grid.appendChild(backBtn);
+  }
+}
+
+function skipOrg() { renderList(); showPage('list'); }
+
+/* ══════════════════════════════════════════════
+   FULL PLAY (전체 듣기)
+══════════════════════════════════════════════ */
+let fpPlaying = false;
+let fpCurrentIdx = 0;
+let fpCurrentStep = 0;
+const FP_STEPS = ['buildup','hooking','benefit','closing'];
+const FP_STEP_LABELS = ['빌드업','후킹','베네핏','클로징'];
+
+function initFullPlayPage() {
+  const list = document.getElementById('fp-list');
+  list.innerHTML = '';
+  SPEECHES.forEach((s,i) => {
+    const div = document.createElement('div');
+    div.className = 'fp-item'; div.id = `fp-item-${i}`;
+    div.innerHTML = `<div class="fp-item-num">${s.id}</div><span>${s.name}</span>`;
+    div.onclick = () => { fpCurrentIdx = i; fpCurrentStep = 0; if(!fpPlaying) startFullPlay(); else speakFPStep(); };
+    list.appendChild(div);
+  });
+}
+
+function toggleFullPlay() {
+  if (fpPlaying) { stopFullPlay(); } else { fpCurrentIdx = 0; fpCurrentStep = 0; startFullPlay(); }
+}
+
+function startFullPlay() {
+  if (!('speechSynthesis' in window)) { showToast('음성을 지원하지 않는 브라우저입니다'); return; }
+  fpPlaying = true;
+  document.getElementById('fp-btn-play').textContent = '⏸ 일시정지';
+  speakFPStep();
+}
+
+function speakFPStep() {
+  if (!fpPlaying) return;
+  if (fpCurrentIdx >= SPEECHES.length) { stopFullPlay(); showToast('전체 재생이 완료되었습니다 🎉'); return; }
+  const s = SPEECHES[fpCurrentIdx];
+  const stepKey = FP_STEPS[fpCurrentStep];
+  const text = `${fpCurrentStep===0 ? s.name+'.' : ''} ${FP_STEP_LABELS[fpCurrentStep]}: ${s[stepKey]}`;
+
+  document.getElementById('fp-now-name').textContent = s.name;
+  document.getElementById('fp-now-step').textContent = FP_STEP_LABELS[fpCurrentStep];
+  document.getElementById('fp-counter').textContent = `${fpCurrentIdx+1} / 30`;
+  document.getElementById('fp-progress-fill').style.width = `${((fpCurrentIdx*4+fpCurrentStep)/(30*4))*100}%`;
+
+  document.querySelectorAll('.fp-item').forEach((el,i) => {
+    el.classList.toggle('active', i === fpCurrentIdx);
+    el.classList.toggle('played', i < fpCurrentIdx);
+  });
+  const activeEl = document.getElementById(`fp-item-${fpCurrentIdx}`);
+  if (activeEl) activeEl.scrollIntoView({behavior:'smooth', block:'nearest'});
+
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'ko-KR'; utt.rate = 0.88;
+  utt.onend = () => {
+    if (!fpPlaying) return;
+    fpCurrentStep++;
+    if (fpCurrentStep >= FP_STEPS.length) { fpCurrentStep = 0; fpCurrentIdx++; }
+    speakFPStep();
+  };
+  utt.onerror = () => { if(fpPlaying) { fpCurrentStep=0; fpCurrentIdx++; speakFPStep(); } };
+  speechSynthesis.cancel();
+  speechSynthesis.speak(utt);
+}
+
+function stopFullPlay() {
+  fpPlaying = false;
+  speechSynthesis.cancel();
+  const btn = document.getElementById('fp-btn-play');
+  if (btn) btn.textContent = '▶ 전체 재생 시작';
+  document.querySelectorAll('.fp-item').forEach(el => el.classList.remove('active'));
+}
+
+/* ══════════════════════════════════════════════
+   PRACTICE - PLAY ALL SECTIONS AT ONCE
+══════════════════════════════════════════════ */
+let playAllActive = false;
+let playAllStepIdx = 0;
+
+function togglePlayAll() {
+  if (playAllActive) { stopPlayAll(); return; }
+  playAllActive = true; playAllStepIdx = 0;
+  const btn = document.getElementById('btn-play-all');
+  btn.classList.add('playing'); btn.textContent = '⏹ 정지';
+  playAllStep();
+}
+
+function playAllStep() {
+  if (!playAllActive || !currentSpeech) return;
+  if (playAllStepIdx >= FP_STEPS.length) { stopPlayAll(); return; }
+  const key = FP_STEPS[playAllStepIdx];
+  const label = FP_STEP_LABELS[playAllStepIdx];
+
+  // 해당 스텝 카드 열기
+  document.querySelectorAll('.step-card').forEach(c => c.classList.remove('open'));
+  const cards = document.querySelectorAll('.step-card');
+  if (cards[playAllStepIdx]) cards[playAllStepIdx].classList.add('open');
+
+  // 섹션 버튼 상태 업데이트
+  document.querySelectorAll('.step-tts-btn').forEach(b => { b.classList.remove('playing'); b.innerHTML='<span class="step-tts-icon">🔊</span> 목소리 듣기'; });
+  const btns = document.querySelectorAll('.step-tts-btn');
+  if (btns[playAllStepIdx]) { btns[playAllStepIdx].classList.add('playing'); btns[playAllStepIdx].innerHTML='<span class="step-tts-icon">🔊</span> 재생 중...'; }
+
+  const utt = new SpeechSynthesisUtterance(`${label}: ${currentSpeech[key]}`);
+  utt.lang = 'ko-KR'; utt.rate = 0.88;
+  utt.onend = () => { if (!playAllActive) return; playAllStepIdx++; playAllStep(); };
+  utt.onerror = () => { if (playAllActive) { playAllStepIdx++; playAllStep(); } };
+  speechSynthesis.cancel();
+  speechSynthesis.speak(utt);
+}
+
+function stopPlayAll() {
+  playAllActive = false; playAllStepIdx = 0;
+  speechSynthesis.cancel();
+  const btn = document.getElementById('btn-play-all');
+  if (btn) { btn.classList.remove('playing'); btn.textContent = '🔊 전체 한번에 듣기'; }
+  document.querySelectorAll('.step-tts-btn').forEach(b => { b.classList.remove('playing'); b.innerHTML='<span class="step-tts-icon">🔊</span> 목소리 듣기'; });
+}
+
+/* ══════════════════════════════════════════════
+   ADMIN PAGE
+══════════════════════════════════════════════ */
+function showAdminPage() {
+  // 필터 초기화
+  const hqSel = document.getElementById('admin-filter-hq');
+  hqSel.innerHTML = '<option value="">전체 본부</option>';
+  Object.keys(ORG).forEach(hq => { const o=document.createElement('option'); o.value=hq; o.textContent=hq; hqSel.appendChild(o); });
+  document.getElementById('admin-filter-region').innerHTML = '<option value="">전체 지역단</option>';
+  document.getElementById('admin-filter-branch').innerHTML = '<option value="">전체 지점</option>';
+  renderAdminDashboard();
+  showPage('admin');
+}
+
+function adminFilterChange(level) {
+  const hq = document.getElementById('admin-filter-hq').value;
+  const regionSel = document.getElementById('admin-filter-region');
+  const branchSel = document.getElementById('admin-filter-branch');
+  if (level === 'hq') {
+    regionSel.innerHTML = '<option value="">전체 지역단</option>';
+    branchSel.innerHTML = '<option value="">전체 지점</option>';
+    if (hq && ORG[hq]) {
+      Object.keys(ORG[hq]).forEach(r => { const o=document.createElement('option'); o.value=r; o.textContent=r; regionSel.appendChild(o); });
+    }
+  } else if (level === 'region') {
+    branchSel.innerHTML = '<option value="">전체 지점</option>';
+    const region = regionSel.value;
+    if (hq && region && ORG[hq] && ORG[hq][region]) {
+      ORG[hq][region].forEach(b => { const o=document.createElement('option'); o.value=b; o.textContent=b; branchSel.appendChild(o); });
+    }
+  }
+  renderAdminDashboard();
+}
+
+function getAllUserData() {
+  const users = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (!key.startsWith('hanwha_fp_')) continue;
+    try {
+      const data = JSON.parse(localStorage.getItem(key));
+      if (data && data.name) users.push(data);
+    } catch {}
+  }
+  return users;
+}
+
+function renderAdminDashboard() {
+  const hqF = document.getElementById('admin-filter-hq').value;
+  const regionF = document.getElementById('admin-filter-region').value;
+  const branchF = document.getElementById('admin-filter-branch').value;
+
+  let users = getAllUserData().filter(u => u.name !== '관리자');
+  if (hqF) users = users.filter(u => u.hq === hqF);
+  if (regionF) users = users.filter(u => u.region === regionF);
+  if (branchF) users = users.filter(u => u.branch === branchF);
+
+  const total = users.length;
+  const doneArr = users.map(u => (u.done||[]).length);
+  const avg = total ? Math.round(doneArr.reduce((a,b)=>a+b,0)/total) : 0;
+  const fullDone = users.filter(u=>(u.done||[]).length===30).length;
+  const zero = users.filter(u=>(u.done||[]).length===0).length;
+
+  document.getElementById('adm-total-fp').textContent = total;
+  document.getElementById('adm-avg-done').textContent = avg;
+  document.getElementById('adm-full-done').textContent = fullDone;
+  document.getElementById('adm-zero').textContent = zero;
+
+  // 화법별 차트
+  const chart = document.getElementById('admin-chart');
+  if (total === 0) { chart.innerHTML = '<div class="admin-empty">등록된 FP 데이터가 없습니다</div>'; }
+  else {
+    const counts = SPEECHES.map(s => users.filter(u=>(u.done||[]).includes(s.id)).length);
+    const max = Math.max(...counts, 1);
+    chart.innerHTML = counts.map((cnt,i) =>
+      `<div class="admin-bar-row">
+        <div class="admin-bar-label">${i+1}. ${SPEECHES[i].name.replace(' 화법','')}</div>
+        <div class="admin-bar-wrap"><div class="admin-bar-fill" style="width:${Math.round(cnt/max*100)}%"></div></div>
+        <div class="admin-bar-val">${cnt}</div>
+      </div>`
+    ).join('');
+  }
+
+  // FP별 목록
+  const fpList = document.getElementById('admin-fp-list');
+  if (total === 0) { fpList.innerHTML = '<div class="admin-empty">해당 조건의 FP가 없습니다</div>'; return; }
+  const sorted = [...users].sort((a,b)=>(b.done||[]).length-(a.done||[]).length);
+  fpList.innerHTML = sorted.map(u => {
+    const cnt = (u.done||[]).length;
+    const pct = Math.round(cnt/30*100);
+    const loc = [u.hq, u.region, u.branch].filter(Boolean).join(' › ') || '소속 미입력';
+    return `<div class="admin-fp-card">
+      <div class="admin-fp-avatar">${u.name.charAt(0)}</div>
+      <div class="admin-fp-info">
+        <div class="admin-fp-name">${u.name} <span style="font-size:11px;color:var(--text3);font-weight:400">${u.empId||''}</span></div>
+        <div class="admin-fp-sub">${loc}</div>
+        <div class="admin-fp-mini-bar"><div class="admin-fp-mini-fill" style="width:${pct}%"></div></div>
+      </div>
+      <div class="admin-fp-cnt">${cnt}<span style="font-size:11px;color:var(--text3)">/30</span></div>
+    </div>`;
+  }).join('');
+}
+
+/* ─────────────────────────────────────────── */
+
+function stopTTS() {
+  if ('speechSynthesis' in window) { speechSynthesis.cancel(); }
+  if (activeTtsBtn) { resetTtsBtn(activeTtsBtn); }
+  ttsActive = false;
+  ttsUtterance = null;
+  activeTtsBtn = null;
+  if (playAllActive) stopPlayAll();
+}
+/* ─────────────────────────────────────────── */
+
+document.getElementById('input-name').addEventListener('keydown', e => { if (e.key==='Enter') document.getElementById('input-id').focus(); });
+document.getElementById('input-id').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
+</script>
+</body>
+</html>
