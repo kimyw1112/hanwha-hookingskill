@@ -517,7 +517,32 @@
 
   .nav-dot.active { width: 18px; background: white; }
 
-  /* EMPTY STATE */
+  /* TTS 미지원 안내 모달 */
+  .tts-warn-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.55); z-index: 3000;
+    align-items: flex-end; justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  .tts-warn-overlay.open { display: flex; }
+  .tts-warn-modal {
+    background: white; border-radius: 24px 24px 0 0;
+    padding: 2rem 1.5rem calc(2rem + env(safe-area-inset-bottom));
+    width: 100%; max-width: 480px;
+    animation: slideUp 0.3s ease;
+  }
+  .tts-warn-handle { width: 40px; height: 4px; background: #DDD; border-radius: 2px; margin: 0 auto 1.5rem; }
+  .tts-warn-icon { font-size: 40px; text-align: center; margin-bottom: 0.75rem; }
+  .tts-warn-title { font-size: 18px; font-weight: 700; color: var(--text); text-align: center; margin-bottom: 0.5rem; }
+  .tts-warn-desc { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 1.25rem; text-align: center; }
+  .tts-warn-steps { background: var(--surface2); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+  .tts-warn-step { font-size: 13px; color: var(--text); line-height: 1.8; }
+  .tts-warn-step strong { color: var(--primary); }
+  .btn-tts-warn-close {
+    width: 100%; padding: 14px; background: linear-gradient(135deg, #E8310A, #FF5733);
+    color: white; border: none; border-radius: 10px;
+    font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer;
+  }
   .empty-done {
     text-align: center;
     padding: 2rem;
@@ -789,67 +814,6 @@
     display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
   .fp-item.active .fp-item-num { background: var(--primary); color: white; }
 
-  /* ADMIN PAGE */
-  #page-admin { background: var(--surface2); }
-  .admin-header {
-    background: linear-gradient(135deg, #1A1A2E, #16213E);
-    padding: 3rem 1.5rem 1.5rem; color: white;
-  }
-  .admin-header h2 { font-size: 20px; font-weight: 700; }
-  .admin-header p { font-size: 13px; opacity: 0.7; margin-top: 4px; }
-  .admin-body { padding: 1.25rem; }
-  .admin-filter {
-    background: white; border-radius: 12px; padding: 1rem 1.25rem;
-    margin-bottom: 1rem; display: flex; gap: 8px; flex-wrap: wrap;
-  }
-  .admin-filter select {
-    flex: 1; min-width: 120px; padding: 8px 10px;
-    border: 1.5px solid var(--border); border-radius: 8px;
-    font-size: 13px; font-family: inherit; color: var(--text);
-    background: var(--surface2); outline: none;
-  }
-  .admin-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1rem; }
-  .admin-stat-card {
-    background: white; border-radius: 12px; padding: 1rem;
-    text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  }
-  .admin-stat-num { font-size: 28px; font-weight: 800; color: var(--primary); }
-  .admin-stat-label { font-size: 12px; color: var(--text2); margin-top: 2px; }
-  .admin-section-title {
-    font-size: 13px; font-weight: 700; color: var(--text);
-    margin: 1rem 0 0.5rem;
-  }
-  .admin-fp-card {
-    background: white; border-radius: 10px; padding: 12px 14px;
-    display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-  }
-  .admin-fp-avatar {
-    width: 36px; height: 36px; border-radius: 10px;
-    background: linear-gradient(135deg, #E8310A, #FF5733);
-    color: white; font-size: 14px; font-weight: 700;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
-  .admin-fp-info { flex: 1; min-width: 0; }
-  .admin-fp-name { font-size: 14px; font-weight: 700; color: var(--text); }
-  .admin-fp-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
-  .admin-fp-mini-bar { height: 4px; background: var(--surface2); border-radius: 2px; margin-top: 4px; overflow: hidden; }
-  .admin-fp-mini-fill { height: 100%; background: linear-gradient(90deg,#E8310A,#FF8C00); border-radius: 2px; }
-  .admin-fp-cnt { font-size: 14px; font-weight: 700; color: var(--primary); white-space: nowrap; }
-  .admin-chart { background: white; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
-  .admin-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-  .admin-bar-label { font-size: 12px; color: var(--text2); width: 80px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .admin-bar-wrap { flex: 1; height: 18px; background: var(--surface2); border-radius: 4px; overflow: hidden; }
-  .admin-bar-fill { height: 100%; background: linear-gradient(90deg,#E8310A,#FF8C00); border-radius: 4px; transition: width 0.5s; }
-  .admin-bar-val { font-size: 12px; font-weight: 700; color: var(--text2); width: 28px; text-align: right; flex-shrink: 0; }
-  .admin-empty { text-align: center; padding: 2rem; color: var(--text3); font-size: 14px; }
-  .btn-admin-logout {
-    width: 100%; margin-top: 1rem; padding: 13px;
-    background: transparent; border: 1.5px solid var(--border);
-    border-radius: 10px; font-size: 14px; font-weight: 600;
-    color: var(--text2); font-family: inherit; cursor: pointer;
-  }
-
   /* LIST PAGE - full listen button */
   .btn-fullplay {
     display: flex; align-items: center; gap: 8px;
@@ -906,16 +870,8 @@
         <p>실전 후킹화법 연습 시스템</p>
       </div>
     </div>
-    <div class="field-group">
-      <label>성명</label>
-      <input type="text" id="input-name" placeholder="이름을 입력하세요" autocomplete="name" />
-    </div>
-    <div class="field-group">
-      <label>사번</label>
-      <input type="text" id="input-id" placeholder="사번을 입력하세요" autocomplete="off" inputmode="text" />
-    </div>
     <button class="btn-primary" onclick="doLogin()">연습 시작하기</button>
-    <p class="login-note">입력하신 사번으로 연습 현황이 저장됩니다</p>
+    <p class="login-note">개인정보를 수집하지 않습니다. 연습 기록은 이 기기에만 저장됩니다.</p>
     <button class="btn-install" id="btn-install" onclick="handleInstall()">
       <span class="btn-install-icon">📲</span> 홈 화면에 추가하기
     </button>
@@ -957,34 +913,15 @@
   <div class="fp-list" id="fp-list"></div>
 </div>
 
-<!-- PAGE: ADMIN -->
-<div id="page-admin" class="page">
-  <div class="admin-header">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start">
-      <div>
-        <h2>📊 관리자 대시보드</h2>
-        <p>FP 화법 연습 현황</p>
-      </div>
-      <button onclick="doLogout()" style="background:rgba(255,255,255,0.15);border:none;border-radius:8px;color:white;font-size:12px;font-family:inherit;padding:6px 12px;cursor:pointer;">로그아웃</button>
-    </div>
-  </div>
-  <div class="admin-body">
-    <div class="admin-filter">
-      <select id="admin-filter-hq" onchange="adminFilterChange('hq')"><option value="">전체 본부</option></select>
-      <select id="admin-filter-region" onchange="adminFilterChange('region')"><option value="">전체 지역단</option></select>
-      <select id="admin-filter-branch" onchange="adminFilterChange('branch')"><option value="">전체 지점</option></select>
-    </div>
-    <div class="admin-stat-grid">
-      <div class="admin-stat-card"><div class="admin-stat-num" id="adm-total-fp">0</div><div class="admin-stat-label">전체 FP</div></div>
-      <div class="admin-stat-card"><div class="admin-stat-num" id="adm-avg-done">0</div><div class="admin-stat-label">평균 완료 화법</div></div>
-      <div class="admin-stat-card"><div class="admin-stat-num" id="adm-full-done">0</div><div class="admin-stat-label">30개 완료 FP</div></div>
-      <div class="admin-stat-card"><div class="admin-stat-num" id="adm-zero">0</div><div class="admin-stat-label">미시작 FP</div></div>
-    </div>
-    <div class="admin-section-title">화법별 연습 현황</div>
-    <div class="admin-chart" id="admin-chart"></div>
-    <div class="admin-section-title">FP별 현황</div>
-    <div id="admin-fp-list"></div>
-    <button class="btn-admin-logout" onclick="doLogout()">로그아웃</button>
+<!-- TTS 미지원 안내 모달 -->
+<div class="tts-warn-overlay" id="tts-warn-modal">
+  <div class="tts-warn-modal">
+    <div class="tts-warn-handle"></div>
+    <div class="tts-warn-icon">🔇</div>
+    <div class="tts-warn-title">음성 기능을 사용할 수 없어요</div>
+    <div class="tts-warn-desc" id="tts-warn-desc">현재 브라우저에서 음성 기능이 지원되지 않습니다.</div>
+    <div class="tts-warn-steps" id="tts-warn-steps"></div>
+    <button class="btn-tts-warn-close" onclick="document.getElementById('tts-warn-modal').classList.remove('open')">확인</button>
   </div>
 </div>
 
@@ -1095,22 +1032,20 @@ let ttsActive = false;
 let ttsUtterance = null;
 
 /* ══════════════════════════════════════════════
-   로컬 스토리지 데이터 관리
+   로컬 스토리지 데이터 관리 (익명, 개인정보 미수집)
 ══════════════════════════════════════════════ */
-function getStorageKey(empId) { return `hanwha_fp_${empId}`; }
+const STORAGE_KEY = 'hanwha_fp_data';
 
-function getProgress(empId) {
+function getProgress() {
   try {
-    const raw = localStorage.getItem(getStorageKey(empId));
-    return raw ? JSON.parse(raw) : { name: '', done: [], hq:'', region:'', branch:'' };
-  } catch { return { name: '', done: [], hq:'', region:'', branch:'' }; }
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : { done: [], hq:'', region:'', branch:'' };
+  } catch { return { done: [], hq:'', region:'', branch:'' }; }
 }
 
-function saveProgress(empId, data) {
-  try { localStorage.setItem(getStorageKey(empId), JSON.stringify(data)); } catch {}
+function saveProgress(data) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch {}
 }
-
-function getProgressLocal(empId) { return getProgress(empId); }
 
 
 function showPage(id) {
@@ -1126,32 +1061,30 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2500);
 }
 
+// XSS 방어용 텍스트 이스케이프 함수
+function escapeHtml(str) {
+  if (typeof str !== 'string') return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
+
 function doLogin() {
-  const name = document.getElementById('input-name').value.trim();
-  const empId = document.getElementById('input-id').value.trim();
-  if (!name) { showToast('성명을 입력해 주세요'); return; }
-  if (!empId) { showToast('사번을 입력해 주세요'); return; }
-
-  if (name === '관리자' && empId === '1234567') {
-    currentUser = { name, empId, hq:'', region:'', branch:'' };
-    showAdminPage();
-    return;
-  }
-
-  currentUser = { name, empId, hq:'', region:'', branch:'' };
-  const prog = getProgress(empId);
-  prog.name = name;
+  // 익명 세션 ID 생성 (개인정보 미수집)
+  currentUser = { hq:'', region:'', branch:'' };
+  const prog = getProgress();
   if (prog.hq) {
-    // 이전에 소속을 선택한 적 있음 → 바로 목록으로
     currentUser.hq = prog.hq;
     currentUser.region = prog.region;
     currentUser.branch = prog.branch;
-    saveProgress(empId, prog);
+    saveProgress(prog);
     renderList();
     showPage('list');
   } else {
-    // 처음 로그인 → 소속 선택 페이지로
-    saveProgress(empId, prog);
+    saveProgress(prog);
     showOrgPage();
   }
 }
@@ -1159,18 +1092,16 @@ function doLogin() {
 function doLogout() {
   stopTTS(); stopFullPlay();
   currentUser = null; orgStep = 'hq'; orgSelected = {};
-  document.getElementById('input-name').value = '';
-  document.getElementById('input-id').value = '';
   showPage('login');
 }
 
 function renderList() {
-  const prog = getProgress(currentUser.empId);
+  const prog = getProgress();
   const done = new Set(prog.done || []);
-  document.getElementById('list-greeting').textContent = `안녕하세요, ${currentUser.empId}님!`;
-  document.getElementById('list-name').textContent = `${currentUser.name} FP`;
 
-  // 소속 표시
+  // 소속 표시 (XSS 방어: textContent 사용)
+  document.getElementById('list-greeting').textContent = '안녕하세요!';
+  document.getElementById('list-name').textContent = 'FP님';
   const orgEl = document.getElementById('list-org');
   const orgParts = [currentUser.hq, currentUser.region, currentUser.branch].filter(Boolean);
   orgEl.textContent = orgParts.length ? orgParts.join(' › ') : '소속 미선택';
@@ -1178,6 +1109,7 @@ function renderList() {
   const cnt = done.size;
   document.getElementById('progress-text').textContent = `${cnt} / 30`;
   document.getElementById('progress-fill').style.width = `${Math.round(cnt / 30 * 100)}%`;
+
   const grid = document.getElementById('speech-grid');
   grid.innerHTML = '';
   SPEECHES.forEach(s => {
@@ -1185,14 +1117,30 @@ function renderList() {
     const card = document.createElement('div');
     card.className = 'speech-card' + (isDone ? ' done' : '');
     card.onclick = () => openPractice(s.id);
-    card.innerHTML = `
-      <div class="card-num">${s.id}</div>
-      <div class="card-info">
-        <div class="card-name">${s.name}</div>
-        <div class="card-sub">${isDone ? '연습 완료' : '미연습'}</div>
-      </div>
-      <div class="card-badge ${isDone ? 'done-badge' : 'todo-badge'}">${isDone ? '✓ 완료' : '미완'}</div>
-    `;
+
+    // XSS 방어: DOM API로 구성
+    const numEl = document.createElement('div');
+    numEl.className = 'card-num';
+    numEl.textContent = s.id;
+
+    const infoEl = document.createElement('div');
+    infoEl.className = 'card-info';
+    const nameEl = document.createElement('div');
+    nameEl.className = 'card-name';
+    nameEl.textContent = s.name;
+    const subEl = document.createElement('div');
+    subEl.className = 'card-sub';
+    subEl.textContent = isDone ? '연습 완료' : '미연습';
+    infoEl.appendChild(nameEl);
+    infoEl.appendChild(subEl);
+
+    const badgeEl = document.createElement('div');
+    badgeEl.className = 'card-badge ' + (isDone ? 'done-badge' : 'todo-badge');
+    badgeEl.textContent = isDone ? '✓ 완료' : '미완';
+
+    card.appendChild(numEl);
+    card.appendChild(infoEl);
+    card.appendChild(badgeEl);
     grid.appendChild(card);
   });
 }
@@ -1212,7 +1160,7 @@ function openPractice(id) {
   currentSpeech = s;
   document.getElementById('practice-id-label').textContent = `화법 #${s.id}`;
   document.getElementById('practice-name-label').textContent = s.name;
-  const prog = getProgress(currentUser.empId);
+  const prog = getProgress();
   const isDone = (prog.done || []).includes(s.id);
   updateCompleteBtn(isDone);
   const body = document.getElementById('practice-body');
@@ -1267,7 +1215,7 @@ function updateCompleteBtn(isDone) {
 
 function toggleComplete() {
   if (!currentSpeech) return;
-  const prog = getProgress(currentUser.empId);
+  const prog = getProgress();
   const done = new Set(prog.done || []);
   if (done.has(currentSpeech.id)) {
     done.delete(currentSpeech.id);
@@ -1277,7 +1225,7 @@ function toggleComplete() {
     showToast('연습 완료가 기록되었습니다! 🎉');
   }
   prog.done = [...done];
-  saveProgress(currentUser.empId, prog);
+  saveProgress(prog);
   updateCompleteBtn(done.has(currentSpeech.id));
 }
 
@@ -1294,7 +1242,7 @@ function buildTTSText(s) {
 let activeTtsBtn = null;
 
 function speakStep(stepKey, btn) {
-  if (!('speechSynthesis' in window)) { showToast('이 브라우저는 음성 기능을 지원하지 않습니다'); return; }
+  if (!checkTTSAvailable()) return;
   if (activeTtsBtn && activeTtsBtn === btn) { stopTTS(); return; }
   stopTTS();
   const text = currentSpeech[stepKey];
@@ -1322,7 +1270,59 @@ function resetTtsBtn(btn) {
 
 /* stopTTS는 하단에 통합 정의됨 */
 
-/* ── PWA INSTALL ── */
+/* ══════════════════════════════════════════════
+   TTS 지원 여부 체크 (강화)
+══════════════════════════════════════════════ */
+function isKakaoInApp() {
+  return /KAKAOTALK/i.test(navigator.userAgent);
+}
+function isSamsungBrowser() {
+  return /SamsungBrowser/i.test(navigator.userAgent);
+}
+function isChrome() {
+  return /Chrome/i.test(navigator.userAgent) && !/Chromium|SamsungBrowser|KAKAOTALK|OPR|Edg/i.test(navigator.userAgent);
+}
+
+// TTS 사용 가능 여부 + 안내 팝업 표시
+// 반환값: true = 사용 가능, false = 불가 (팝업 표시됨)
+function checkTTSAvailable() {
+  // 1. API 자체가 없음
+  if (!('speechSynthesis' in window)) {
+    showTTSWarn(
+      '현재 브라우저는 음성 기능을 지원하지 않습니다.',
+      isIOS()
+        ? '📌 해결 방법\n① 현재 창을 닫아주세요\n② <strong>Safari</strong> 앱을 열어주세요\n③ 주소창에 링크를 붙여넣고 접속하세요'
+        : '📌 해결 방법\n① 현재 창을 닫아주세요\n② <strong>Chrome</strong> 앱을 열어주세요\n③ 주소창에 링크를 붙여넣고 접속하세요'
+    );
+    return false;
+  }
+  // 2. 카카오톡 인앱브라우저
+  if (isKakaoInApp()) {
+    showTTSWarn(
+      '카카오톡 안에서는 음성 기능이 차단됩니다.',
+      '📌 해결 방법\n① 화면 하단 또는 우측 상단의 <strong>더보기(⋯)</strong>를 탭\n② <strong>"외부 브라우저로 열기"</strong> 또는 <strong>"Chrome으로 열기"</strong> 선택\n③ Chrome에서 다시 접속하면 음성이 정상 재생됩니다'
+    );
+    return false;
+  }
+  // 3. 삼성 인터넷
+  if (isSamsungBrowser()) {
+    showTTSWarn(
+      '삼성 인터넷 브라우저에서는 음성이 불안정합니다.',
+      '📌 해결 방법\n① 현재 창을 닫아주세요\n② <strong>Chrome</strong> 앱을 설치·실행해주세요\n③ 주소창에 링크를 붙여넣고 접속하면 음성이 정상 재생됩니다'
+    );
+    return false;
+  }
+  return true;
+}
+
+function showTTSWarn(desc, steps) {
+  document.getElementById('tts-warn-desc').textContent = desc;
+  document.getElementById('tts-warn-steps').innerHTML = steps.replace(/\n/g, '<br>');
+  document.getElementById('tts-warn-modal').classList.add('open');
+}
+/* ── END TTS CHECK ── */
+
+
 let deferredPrompt = null;
 
 // beforeinstallprompt는 페이지 로드 초기에 딱 한 번 발생하므로
@@ -1378,21 +1378,53 @@ function closeAndroidModal(e) {
 /* ── ACCESS KEY + 로딩 통합 ── */
 const ACCESS_KEY = '1234';
 
+// 브루트포스 방어: 시도 횟수 + 잠금 시간 관리
+// (메모리에만 저장 — sessionStorage 조작 우회 불가)
+let _accessAttempts = 0;
+let _accessLockedUntil = 0;
+const MAX_ATTEMPTS = 5;
+const LOCKOUT_MS = 60000; // 5회 실패 시 60초 잠금
+
 function submitAccessKey() {
-  const val = document.getElementById('access-input').value.trim();
-  const errEl = document.getElementById('access-error');
+  const now = Date.now();
   const inputEl = document.getElementById('access-input');
+  const errEl = document.getElementById('access-error');
+
+  // 잠금 상태 확인
+  if (now < _accessLockedUntil) {
+    const remaining = Math.ceil((_accessLockedUntil - now) / 1000);
+    inputEl.classList.add('error');
+    errEl.textContent = `너무 많이 시도했습니다. ${remaining}초 후 다시 시도해 주세요.`;
+    inputEl.value = '';
+    return;
+  }
+
+  const val = inputEl.value.trim();
   if (val === ACCESS_KEY) {
-    sessionStorage.setItem('hw_access_ok', '1');
+    _accessAttempts = 0;
+    _accessLockedUntil = 0;
+    // sessionStorage 대신 메모리 변수로만 인증 상태 관리
+    _accessGranted = true;
     errEl.textContent = '';
     hideLoading();
   } else {
+    _accessAttempts++;
     inputEl.classList.add('error');
-    errEl.textContent = '접속 코드가 올바르지 않습니다';
     inputEl.value = '';
     setTimeout(() => inputEl.classList.remove('error'), 1200);
+
+    if (_accessAttempts >= MAX_ATTEMPTS) {
+      _accessLockedUntil = now + LOCKOUT_MS;
+      _accessAttempts = 0;
+      errEl.textContent = `5회 실패. 60초 동안 입력이 잠깁니다.`;
+    } else {
+      const left = MAX_ATTEMPTS - _accessAttempts;
+      errEl.textContent = `접속 코드가 올바르지 않습니다. (${left}회 남음)`;
+    }
   }
 }
+
+let _accessGranted = false;
 
 function showAccessBox() {
   document.getElementById('loading-spinner-wrap').style.display = 'none';
@@ -1406,18 +1438,13 @@ function hideLoading() {
   el.classList.add('hidden');
   setTimeout(() => {
     el.remove();
-    initInstallButton(); // 로딩 끝난 후 버튼 표시 여부 결정
+    initInstallButton();
   }, 400);
 }
 
-// 로딩 완료 후 → 이미 인증됐으면 바로 숨김, 아니면 코드 입력창 표시
 function onPageReady() {
-  if (sessionStorage.getItem('hw_access_ok') === '1') {
-    hideLoading();
-  } else {
-    // 스피너를 최소 0.6초는 보여준 뒤 입력창으로 전환
-    setTimeout(showAccessBox, 600);
-  }
+  // sessionStorage 체크 제거 — 페이지 로드 시 항상 코드 입력 요구
+  setTimeout(showAccessBox, 600);
 }
 
 if (document.readyState === 'complete') {
@@ -1455,42 +1482,58 @@ function renderOrgGrid() {
     Object.keys(ORG).forEach(hq => {
       const btn = document.createElement('button');
       btn.className = 'org-btn';
-      btn.innerHTML = `<span>${hq}</span><span class="org-arrow">›</span>`;
+      const sp1 = document.createElement('span'); sp1.textContent = hq;
+      const sp2 = document.createElement('span'); sp2.className = 'org-arrow'; sp2.textContent = '›';
+      btn.appendChild(sp1); btn.appendChild(sp2);
       btn.onclick = () => { orgSelected.hq = hq; orgStep = 'region'; renderOrgGrid(); };
       grid.appendChild(btn);
     });
   } else if (orgStep === 'region') {
     headerSub.textContent = '지역단을 선택해 주세요';
     secLabel.textContent = '지역단';
-    bc.innerHTML = `<strong>${orgSelected.hq}</strong> <span>›</span>`;
+    bc.textContent = '';
+    const hqStrong = document.createElement('strong'); hqStrong.textContent = orgSelected.hq;
+    const sep = document.createElement('span'); sep.textContent = ' › ';
+    bc.appendChild(hqStrong); bc.appendChild(sep);
     Object.keys(ORG[orgSelected.hq]).forEach(region => {
       const btn = document.createElement('button');
       btn.className = 'org-btn';
-      btn.innerHTML = `<span>${region}</span><span class="org-arrow">›</span>`;
+      const sp1 = document.createElement('span'); sp1.textContent = region;
+      const sp2 = document.createElement('span'); sp2.className = 'org-arrow'; sp2.textContent = '›';
+      btn.appendChild(sp1); btn.appendChild(sp2);
       btn.onclick = () => { orgSelected.region = region; orgStep = 'branch'; renderOrgGrid(); };
       grid.appendChild(btn);
     });
     const backBtn = document.createElement('button');
     backBtn.className = 'org-btn'; backBtn.style.color='var(--text3)';
-    backBtn.innerHTML = `<span>← 본부 다시 선택</span>`;
+    const backSp = document.createElement('span'); backSp.textContent = '← 본부 다시 선택';
+    backBtn.appendChild(backSp);
     backBtn.onclick = () => { orgStep='hq'; orgSelected={}; renderOrgGrid(); };
     grid.appendChild(backBtn);
   } else if (orgStep === 'branch') {
     headerSub.textContent = '지점을 선택해 주세요';
     secLabel.textContent = '지점';
-    bc.innerHTML = `<strong>${orgSelected.hq}</strong> <span>›</span> <strong>${orgSelected.region}</strong> <span>›</span>`;
+    bc.textContent = '';
+    const hqS = document.createElement('strong'); hqS.textContent = orgSelected.hq;
+    const sep1 = document.createElement('span'); sep1.textContent = ' › ';
+    const rgS = document.createElement('strong'); rgS.textContent = orgSelected.region;
+    const sep2 = document.createElement('span'); sep2.textContent = ' › ';
+    bc.appendChild(hqS); bc.appendChild(sep1); bc.appendChild(rgS); bc.appendChild(sep2);
     ORG[orgSelected.hq][orgSelected.region].forEach(branch => {
       const btn = document.createElement('button');
       btn.className = 'org-btn';
-      btn.innerHTML = `<span>${branch}</span><span style="font-size:13px;color:var(--primary)">선택</span>`;
+      const sp1 = document.createElement('span'); sp1.textContent = branch;
+      const sp2 = document.createElement('span');
+      sp2.style.cssText = 'font-size:13px;color:var(--primary)'; sp2.textContent = '선택';
+      btn.appendChild(sp1); btn.appendChild(sp2);
       btn.onclick = () => {
         orgSelected.branch = branch;
         currentUser.hq = orgSelected.hq;
         currentUser.region = orgSelected.region;
         currentUser.branch = orgSelected.branch;
-        const prog = getProgress(currentUser.empId);
+        const prog = getProgress();
         prog.hq = orgSelected.hq; prog.region = orgSelected.region; prog.branch = orgSelected.branch;
-        saveProgress(currentUser.empId, prog);
+        saveProgress(prog);
         renderList(); showPage('list');
       };
       grid.appendChild(btn);
@@ -1520,7 +1563,13 @@ function initFullPlayPage() {
   SPEECHES.forEach((s,i) => {
     const div = document.createElement('div');
     div.className = 'fp-item'; div.id = `fp-item-${i}`;
-    div.innerHTML = `<div class="fp-item-num">${s.id}</div><span>${s.name}</span>`;
+    const numEl = document.createElement('div');
+    numEl.className = 'fp-item-num';
+    numEl.textContent = s.id;
+    const nameEl = document.createElement('span');
+    nameEl.textContent = s.name;
+    div.appendChild(numEl);
+    div.appendChild(nameEl);
     div.onclick = () => { fpCurrentIdx = i; fpCurrentStep = 0; if(!fpPlaying) startFullPlay(); else speakFPStep(); };
     list.appendChild(div);
   });
@@ -1531,7 +1580,7 @@ function toggleFullPlay() {
 }
 
 function startFullPlay() {
-  if (!('speechSynthesis' in window)) { showToast('음성을 지원하지 않는 브라우저입니다'); return; }
+  if (!checkTTSAvailable()) return;
   fpPlaying = true;
   document.getElementById('fp-btn-play').textContent = '⏸ 일시정지';
   speakFPStep();
@@ -1585,6 +1634,7 @@ let playAllStepIdx = 0;
 
 function togglePlayAll() {
   if (playAllActive) { stopPlayAll(); return; }
+  if (!checkTTSAvailable()) return;
   playAllActive = true; playAllStepIdx = 0;
   const btn = document.getElementById('btn-play-all');
   btn.classList.add('playing'); btn.textContent = '⏹ 정지';
@@ -1623,109 +1673,6 @@ function stopPlayAll() {
   document.querySelectorAll('.step-tts-btn').forEach(b => { b.classList.remove('playing'); b.innerHTML='<span class="step-tts-icon">🔊</span> 목소리 듣기'; });
 }
 
-/* ══════════════════════════════════════════════
-   ADMIN PAGE
-══════════════════════════════════════════════ */
-function showAdminPage() {
-  // 필터 초기화
-  const hqSel = document.getElementById('admin-filter-hq');
-  hqSel.innerHTML = '<option value="">전체 본부</option>';
-  Object.keys(ORG).forEach(hq => { const o=document.createElement('option'); o.value=hq; o.textContent=hq; hqSel.appendChild(o); });
-  document.getElementById('admin-filter-region').innerHTML = '<option value="">전체 지역단</option>';
-  document.getElementById('admin-filter-branch').innerHTML = '<option value="">전체 지점</option>';
-  renderAdminDashboard();
-  showPage('admin');
-}
-
-function adminFilterChange(level) {
-  const hq = document.getElementById('admin-filter-hq').value;
-  const regionSel = document.getElementById('admin-filter-region');
-  const branchSel = document.getElementById('admin-filter-branch');
-  if (level === 'hq') {
-    regionSel.innerHTML = '<option value="">전체 지역단</option>';
-    branchSel.innerHTML = '<option value="">전체 지점</option>';
-    if (hq && ORG[hq]) {
-      Object.keys(ORG[hq]).forEach(r => { const o=document.createElement('option'); o.value=r; o.textContent=r; regionSel.appendChild(o); });
-    }
-  } else if (level === 'region') {
-    branchSel.innerHTML = '<option value="">전체 지점</option>';
-    const region = regionSel.value;
-    if (hq && region && ORG[hq] && ORG[hq][region]) {
-      ORG[hq][region].forEach(b => { const o=document.createElement('option'); o.value=b; o.textContent=b; branchSel.appendChild(o); });
-    }
-  }
-  renderAdminDashboard();
-}
-
-function getAllUserData() {
-  const users = [];
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    if (!key.startsWith('hanwha_fp_')) continue;
-    try {
-      const data = JSON.parse(localStorage.getItem(key));
-      if (data && data.name) users.push(data);
-    } catch {}
-  }
-  return users;
-}
-
-function renderAdminDashboard() {
-  const hqF = document.getElementById('admin-filter-hq').value;
-  const regionF = document.getElementById('admin-filter-region').value;
-  const branchF = document.getElementById('admin-filter-branch').value;
-
-  let users = getAllUserData().filter(u => u.name !== '관리자');
-  if (hqF) users = users.filter(u => u.hq === hqF);
-  if (regionF) users = users.filter(u => u.region === regionF);
-  if (branchF) users = users.filter(u => u.branch === branchF);
-
-  const total = users.length;
-  const doneArr = users.map(u => (u.done||[]).length);
-  const avg = total ? Math.round(doneArr.reduce((a,b)=>a+b,0)/total) : 0;
-  const fullDone = users.filter(u=>(u.done||[]).length===30).length;
-  const zero = users.filter(u=>(u.done||[]).length===0).length;
-
-  document.getElementById('adm-total-fp').textContent = total;
-  document.getElementById('adm-avg-done').textContent = avg;
-  document.getElementById('adm-full-done').textContent = fullDone;
-  document.getElementById('adm-zero').textContent = zero;
-
-  // 화법별 차트
-  const chart = document.getElementById('admin-chart');
-  if (total === 0) { chart.innerHTML = '<div class="admin-empty">등록된 FP 데이터가 없습니다</div>'; }
-  else {
-    const counts = SPEECHES.map(s => users.filter(u=>(u.done||[]).includes(s.id)).length);
-    const max = Math.max(...counts, 1);
-    chart.innerHTML = counts.map((cnt,i) =>
-      `<div class="admin-bar-row">
-        <div class="admin-bar-label">${i+1}. ${SPEECHES[i].name.replace(' 화법','')}</div>
-        <div class="admin-bar-wrap"><div class="admin-bar-fill" style="width:${Math.round(cnt/max*100)}%"></div></div>
-        <div class="admin-bar-val">${cnt}</div>
-      </div>`
-    ).join('');
-  }
-
-  // FP별 목록
-  const fpList = document.getElementById('admin-fp-list');
-  if (total === 0) { fpList.innerHTML = '<div class="admin-empty">해당 조건의 FP가 없습니다</div>'; return; }
-  const sorted = [...users].sort((a,b)=>(b.done||[]).length-(a.done||[]).length);
-  fpList.innerHTML = sorted.map(u => {
-    const cnt = (u.done||[]).length;
-    const pct = Math.round(cnt/30*100);
-    const loc = [u.hq, u.region, u.branch].filter(Boolean).join(' › ') || '소속 미입력';
-    return `<div class="admin-fp-card">
-      <div class="admin-fp-avatar">${u.name.charAt(0)}</div>
-      <div class="admin-fp-info">
-        <div class="admin-fp-name">${u.name} <span style="font-size:11px;color:var(--text3);font-weight:400">${u.empId||''}</span></div>
-        <div class="admin-fp-sub">${loc}</div>
-        <div class="admin-fp-mini-bar"><div class="admin-fp-mini-fill" style="width:${pct}%"></div></div>
-      </div>
-      <div class="admin-fp-cnt">${cnt}<span style="font-size:11px;color:var(--text3)">/30</span></div>
-    </div>`;
-  }).join('');
-}
-
 /* ─────────────────────────────────────────── */
 
 function stopTTS() {
@@ -1738,8 +1685,7 @@ function stopTTS() {
 }
 /* ─────────────────────────────────────────── */
 
-document.getElementById('input-name').addEventListener('keydown', e => { if (e.key==='Enter') document.getElementById('input-id').focus(); });
-document.getElementById('input-id').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
+// 로그인 페이지에 입력 필드 없음 (익명 운영)
 </script>
 </body>
 </html>
